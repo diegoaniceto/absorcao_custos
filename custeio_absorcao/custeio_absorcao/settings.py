@@ -10,7 +10,7 @@ PROJECT_PATH = os.path.abspath(PROJECT_PATH)
 
 STATIC_PATH = os.path.join(PROJECT_PATH, 'static')
 TEMPLATE_PATH = os.path.join(PROJECT_PATH, 'templates')
-DATABASE_PATH = os.path.join(PROJECT_PATH, 'rango.db')
+DATABASE_PATH = os.path.join(PROJECT_PATH, 'bd_absorcao.db')
 
 ADMINS = (
     # ('Your Name', 'your_email@example.com'),
