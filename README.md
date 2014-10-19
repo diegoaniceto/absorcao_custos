@@ -27,6 +27,14 @@ Agora instale as dependências usando
 ```
 pip install requirements.txt
 ```
+Sincronize os modelos com o banco (caso já exista algum, exclua o arquivo '.db'):
+```
+python manage.py syncdb
+```
+Rode o script para povoar o banco
+```
+python povoa_banco.py
+```
 
 Pronto, já pode executar o projeto.
 
