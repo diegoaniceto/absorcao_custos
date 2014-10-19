@@ -10,6 +10,8 @@ python manage.py runserver
 
 O servidor local passará a responder em `http://localhost:8000`
 
+Para acessar o admin, abra: `http://localhost:8000/admin`
+
 ### Instalando o projeto ###
 Dê um
 ```
