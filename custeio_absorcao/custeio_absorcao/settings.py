@@ -1,7 +1,15 @@
 # Django settings for custeio_absorcao project.
+import os
 
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
+
+SETTINGS_DIR = os.path.dirname(__file__)
+PROJECT_PATH = os.path.join(SETTINGS_DIR, os.pardir)
+PROJECT_PATH = os.path.abspath(PROJECT_PATH)
+
+STATIC_PATH = os.path.join(PROJECT_PATH, 'static')
+TEMPLATE_PATH = os.path.join(PROJECT_PATH, 'templates')
 
 ADMINS = (
     # ('Your Name', 'your_email@example.com'),
@@ -71,6 +79,7 @@ STATICFILES_DIRS = (
     # Put strings here, like "/home/html/static" or "C:/www/django/static".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
+    STATIC_PATH,
 )
 
 # List of finder classes that know how to find static files in
@@ -110,6 +119,7 @@ TEMPLATE_DIRS = (
     # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
+    TEMPLATE_PATH
 )
 
 INSTALLED_APPS = (
