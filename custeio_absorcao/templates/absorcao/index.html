@@ -1,19 +1,11 @@
-<!DOCTYPE html>
+{% extends 'absorcao/base.html' %}
 
 {% load static %}
 
-<html>
+{% block body_block %}
 
-    <head>
-        <title>Absorção</title>
-        <link rel="stylesheet" href="{% static "css/base.css" %}" /> <!-- CSS -->
-        <script src="{% static "js/jquery.js" %}"></script> <!-- JavaScript -->
-    </head>
+    <h1>Absorção says...</h1>
+    hello world! <strong>{{ boldmessage }}</strong><br />
+    <a href="/about/">About</a><br />
 
-    <body>
-        <h1>Absorção says...</h1>
-        hello world! <strong>{{ boldmessage }}</strong><br />
-        <a href="/absorcao/about/">About</a><br />
-    </body>
-
-</html>
+{% endblock %}
