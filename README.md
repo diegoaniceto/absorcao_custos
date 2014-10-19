@@ -1,7 +1,11 @@
-absorcao_custos
+Trabalho de Administração de Custos - Método Absorção com Departamentalização
 ===============
 
-Para executar o projeto, basta ir em custeio_absorcao e executar:
-python manage.py runserver 8000
+### Executando o projeto ###
 
-Você pode escolher qualquer porta. Não precisa ser a 8000
+Para executar o projeto, basta ir em custeio_absorcao e executar:
+```
+python manage.py runserver
+```
+
+O servidor responderá em `http://localhost:8000/`
