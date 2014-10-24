@@ -27,7 +27,7 @@ source env/bin/activate
 ```
 Agora instale as dependências usando
 ```
-pip install requirements.txt
+pip install -r requirements.txt
 ```
 Sincronize os modelos com o banco (caso já exista algum, exclua o arquivo '.db'):
 ```
