@@ -41,4 +41,5 @@ python povoa_banco.py
 Pronto, já pode executar o projeto.
 
 ### Documentação do projeto ###
-< adicionar link para o Docs >
+Link Docs:
+https://docs.google.com/document/d/19RtQXSB7aPvgkXt6ln_3puDTUDya7vCDIO4ikgYYZIM/edit
