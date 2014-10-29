@@ -6,9 +6,9 @@ import os
 def populate():
     dep_corte = add_departamento('Corte e Costura', True)
     dep_acabamento = add_departamento('Acabamento', True)
-    dep_acabamento = add_departamento('Compras', False)
-    dep_acabamento = add_departamento('Almoxarifado', False)
-    dep_acabamento = add_departamento('Adm. Producao', False)
+    dep_compras = add_departamento('Compras', False)
+    dep_almox = add_departamento('Almoxarifado', False)
+    dep_adm = add_departamento('Adm. Producao', False)
 
     prod_camisetas = add_produto('Camisetas', 18000, 10)
     prod_vestidos = add_produto('Vestidos', 4200, 22)
