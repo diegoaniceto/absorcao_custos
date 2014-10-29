@@ -42,7 +42,7 @@ def produto_edit(request, id_produto=None):
             form.save()
 
             # If the save was successful, redirect to the details page
-            return HttpResponseRedirect('/produto/' + produto.id)
+            return HttpResponseRedirect('/produto/')
 
         else:
             print form.errors

@@ -19,7 +19,7 @@
 		    <td><a href="/produto/{{ produto.id }}">{{ produto.nome }}</a></td>
 		    <td>{{ produto.producao_mensal }}</td>
 		    <td>R$ {{ produto.preco_venda_unitario }}</td>
-		    <td><span class="glyphicon glyphicon-pencil"></span><i class="glyphicon glyphicon-pencil"></i><a href="/produto/edit/{{ produto.id }}">Editar</a></td>
+		    <td><a href="/produto/edit/{{ produto.id }}"><span class="glyphicon glyphicon-pencil"></span></a></td>
 	    	</tr>
 		    {% endfor %}	
 	    </tbody>

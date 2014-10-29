@@ -6,19 +6,22 @@
 
     <h1>Editando Produto</h1>
 
-    <form id="produto_form" method="post" action="/produto/edit/{{ produto.id }}/">
-    
-		{% csrf_token %}
-	    {% for hidden in form.hidden_fields %}
-	        {{ hidden }}
-	    {% endfor %}    
+    <div class="col-md-6"> 
 
-	    {% load bootstrap3 %}
-        {% bootstrap_form form %}
+		<form id="produto_form" method="post" action="/produto/edit/{{ produto.id }}/">
 
-    	<input type="submit" name="submit" value="Update Experiment" class="btn btn-primary pull-right"/>
+			{% csrf_token %}
+		    {% for hidden in form.hidden_fields %}
+		        {{ hidden }}
+		    {% endfor %}    
 
-        <a href="/produto/edit/{{ produto.id }}" class="btn btn-small btn-default pull-right">Cancelar</a>
-    </form>
+		    {% load bootstrap3 %}
+		    {% bootstrap_form form %}
+
+			<input type="submit" name="submit" value="Salvar" class="btn btn-primary pull-right"/>
+
+		    <a href="/produto/edit/{{ produto.id }}" class="btn btn-small btn-default pull-right">Cancelar</a>
+		</form>
+    </div>
 
 {% endblock %}
