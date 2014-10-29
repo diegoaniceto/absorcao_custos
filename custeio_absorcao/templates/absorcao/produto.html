@@ -1,0 +1,29 @@
+{% extends 'absorcao/base.html' %}
+
+{% load static %}
+
+{% block body_block %}
+
+    <h1>Produtos</h1>
+    <div class="table-responsive">
+	  <table class="table table-hover table-bordered table-striped">
+    	<thead>
+    		<th>Nome</th>
+    		<th>Produção mensal</th>
+    		<th>Preço de venda unitário</th>
+    		<th>Ações</th>
+    	</thead>
+	    <tbody>
+		    {% for produto in produtos %}
+	    	<tr>
+		    <td><a href="/produto/{{ produto.id }}">{{ produto.nome }}</a></td>
+		    <td>{{ produto.producao_mensal }}</td>
+		    <td>R$ {{ produto.preco_venda_unitario }}</td>
+		    <td><a href="/produto/edit/{{ produto.id }}"><span class="glyphicon glyphicon-pencil"></span></a></td>
+	    	</tr>
+		    {% endfor %}	
+	    </tbody>
+	  </table>
+	</div>
+
+{% endblock %}
