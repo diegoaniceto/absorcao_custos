@@ -3,4 +3,5 @@ from absorcao import views
 
 urlpatterns = patterns('',
                        url(r'^$', views.index, name='index'),
-                       url(r'^produto/$', views.produtoIndex, name='produto'),)
+                       url(r'^produto/$', views.produto_index, name='produto'),
+                       url(r'^produto/edit/(?P<id_produto>\w+)/$', views.produto_edit, name='produto_edit'),)
