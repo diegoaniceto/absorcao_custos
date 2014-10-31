@@ -62,6 +62,7 @@ class CustoDireto(models.Model):
 class CustoDiretoProduto(models.Model):
     produto = models.ForeignKey(Produto)
     custo_direto = models.ForeignKey(CustoDireto)
+    mes = models.ForeignKey(Mes)
     valor_unitario = models.DecimalField(decimal_places=2, max_digits=10)
     
     def __unicode__(self):

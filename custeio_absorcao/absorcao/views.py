@@ -1,8 +1,9 @@
 from django.template import RequestContext
 from django.shortcuts import render_to_response
+from models import Produto, ProdutoMes, CustoDireto, CustoDiretoProduto
 from django.http import HttpResponseRedirect, HttpResponse
 from django.contrib.auth import authenticate, login, logout
-from models import Produto, ProdutoMes, TempoProducao
+from models import TempoProducao
 from forms import ProdutoForm, TempoProducaoForm
 
 
@@ -75,6 +76,24 @@ def produto_view(request, id_produto=None):
     return render_to_response('absorcao/produto-view.html', context_dict,
                               context)
 
+def custo_direto_index(request):
+    context = RequestContext(request)
+    context_dict = {}
+    
+    custos_diretos = CustoDireto.objects.all().order_by('nome')
+    produtos = Produto.objects.all().order_by('nome')
+    custos_diretos_produtos = CustoDiretoProduto.objects.all().order_by('produto__nome').order_by('custo_direto__nome')
+    
+    context_dict['custos_diretos'] = custos_diretos
+    context_dict['produtos'] = produtos
+    context_dict['custos_diretos_produtos'] = custos_diretos_produtos
+    
+    return render_to_response('absorcao/custo_direto.html', context_dict, context)
+
+def custo_direto_edit(request, mes=None):
+    context = RequestContext(request)
+    context_dict = {}
+    return render_to_response('absorcao/custo_direto-edit.html', context_dict, context)
 
 def user_login(request):
     context = RequestContext(request)

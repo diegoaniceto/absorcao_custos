@@ -1,0 +1,36 @@
+{% extends 'absorcao/base.html' %}
+
+{% load static %}
+
+{% block body_block %}
+
+    <h1>Custos diretos</h1>
+    <div class="table-responsive">
+	  <table class="table table-hover table-striped">
+    	<thead>
+                <th></th>
+    		<th>Calcas</th><th>Camisetas</th><th>Vestidos</th>
+    	</thead>
+	    <tbody>
+	    	    <tr>
+                            <td>Tecidos</td>
+                            <td><input type=text></td>
+                            <td><input type=text></td>
+                            <td><input type=text></td>
+                    </tr>
+                            <td>Aviamentos</td>
+                            <td><input type=text></td>
+                            <td><input type=text></td>
+                            <td><input type=text></td>
+                    </tr>
+                            <td>Mao-de-obra Direta</td>
+                            <td><input type=text></td>
+                            <td><input type=text></td>
+                            <td><input type=text></td>
+	    	    </tr>
+	    </tbody>
+	  </table>
+          <input type='submit' value='Salvar alterações'>
+	</div>
+
+{% endblock %}

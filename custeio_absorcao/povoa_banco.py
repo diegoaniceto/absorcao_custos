@@ -18,8 +18,8 @@ def populate():
     mar = add_mes('Mar', 03, 2014)
 
     add_prod_mes(prod_camisetas, mar, 18000, 10)
-    add_prod_mes(prod_vestidos, fev, 4200, 22)
-    add_prod_mes(prod_vestidos, fev, 13000, 16)
+    add_prod_mes(prod_vestidos, mar, 4200, 22)
+    add_prod_mes(prod_vestidos, mar, 13000, 16)
 
     add_tempo_producao(prod_camisetas, dep_corte, 0.3)
     add_tempo_producao(prod_vestidos, dep_corte, 0.7)
@@ -32,15 +32,15 @@ def populate():
     custo_dir_aviamentos = add_custo_direto('Aviamentos')
     custo_dir_mod = add_custo_direto('Mao-de-obra Direta')
 
-    add_custo_direto_produto(prod_camisetas, custo_dir_tecido, 3.00)
-    add_custo_direto_produto(prod_camisetas, custo_dir_aviamentos, 0.25)
-    add_custo_direto_produto(prod_camisetas, custo_dir_mod, 0.5)
-    add_custo_direto_produto(prod_vestidos, custo_dir_tecido, 4.00)
-    add_custo_direto_produto(prod_vestidos, custo_dir_aviamentos, 0.75)
-    add_custo_direto_produto(prod_vestidos, custo_dir_mod, 1.00)
-    add_custo_direto_produto(prod_calcas, custo_dir_tecido, 3.00)
-    add_custo_direto_produto(prod_calcas, custo_dir_aviamentos, 0.50)
-    add_custo_direto_produto(prod_calcas, custo_dir_mod, 0.75)
+    add_custo_direto_produto(prod_camisetas, custo_dir_tecido, mar, 3.00)
+    add_custo_direto_produto(prod_camisetas, custo_dir_aviamentos, mar,  0.25)
+    add_custo_direto_produto(prod_camisetas, custo_dir_mod, mar, 0.5)
+    add_custo_direto_produto(prod_vestidos, custo_dir_tecido, mar, 4.00)
+    add_custo_direto_produto(prod_vestidos, custo_dir_aviamentos, mar, 0.75)
+    add_custo_direto_produto(prod_vestidos, custo_dir_mod, mar,  1.00)
+    add_custo_direto_produto(prod_calcas, custo_dir_tecido, mar, 3.00)
+    add_custo_direto_produto(prod_calcas, custo_dir_aviamentos, mar, 0.50)
+    add_custo_direto_produto(prod_calcas, custo_dir_mod, mar, 0.75)
 
     add_custo_indireto('Alguel', 24000)
     add_custo_indireto('Energia Eletrica', 42000)
@@ -80,8 +80,8 @@ def add_custo_direto(nome):
     return cd
 
 
-def add_custo_direto_produto(produto, custo_direto, valor_unitario):
-    cdp = CustoDiretoProduto.objects.get_or_create(produto=produto, custo_direto=custo_direto, valor_unitario=valor_unitario)[0]
+def add_custo_direto_produto(produto, custo_direto, mes, valor_unitario):
+    cdp = CustoDiretoProduto.objects.get_or_create(produto=produto, custo_direto=custo_direto, mes=mes, valor_unitario=valor_unitario)[0]
     return cdp
 
 
@@ -96,7 +96,7 @@ def add_despesa(nome, valor_mensal):
 
 
 def add_mes(abreviacao, numero, ano):
-    m = Mes.objects.get_or_create(abreviacao=abreviacao, ano=ano, numero=numero)
+    m = Mes.objects.get_or_create(abreviacao=abreviacao, ano=ano, numero=numero)[0]
     return m
 
 
