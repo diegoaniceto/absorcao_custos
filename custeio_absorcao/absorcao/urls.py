@@ -8,4 +8,6 @@ urlpatterns = patterns('',
                        url(r'^produto/(?P<id_produto>\w+)/$', views.produto_view, name='produto_view'),
                        url(r'^login/$', views.user_login, name='login'),
                        url(r'^logout/$', views.user_logout, name='logout'),
+                       url(r'^tempo-producao/$', views.tempo_producao, name='tempo-producao'),
+                       url(r'^tempo-producao/edit/(?P<id_tempo>\w+)/$', views.tempo_producao_edit, name='tempo-producao_edit'),
                        )

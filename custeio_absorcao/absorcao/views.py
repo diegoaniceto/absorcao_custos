@@ -2,8 +2,8 @@ from django.template import RequestContext
 from django.shortcuts import render_to_response
 from django.http import HttpResponseRedirect, HttpResponse
 from django.contrib.auth import authenticate, login, logout
-from models import Produto, ProdutoMes
-from forms import ProdutoForm
+from models import Produto, ProdutoMes, TempoProducao
+from forms import ProdutoForm, TempoProducaoForm
 
 
 def index(request):
@@ -105,3 +105,47 @@ def user_logout(request):
 
     # Take the user back to the homepage.
     return HttpResponseRedirect('/')
+
+
+def tempo_producao(request):
+    context = RequestContext(request)
+    context_dict = {}
+
+    tempo_producao = TempoProducao.objects.all()
+
+    context_dict['tempo_producao'] = tempo_producao
+
+    return render_to_response('absorcao/tempo-producao.html', context_dict, context)
+
+
+def tempo_producao_edit(request, id_tempo):
+    context = RequestContext(request)
+    context_dict = {}
+    try:
+        tempo_producao = TempoProducao.objects.get(id=id_tempo)
+
+        context_dict['tempo_producao'] = tempo_producao
+
+    except TempoProducao.DoesNotExist:
+        # We get here if we didn't find the specified experiment.
+        return render_to_response('absorcao/tempo-producao-edit.html',
+                                  context_dict, context)
+
+    if request.POST:
+        form = TempoProducaoForm(request.POST, instance=tempo_producao)
+        if form.is_valid():
+
+            form.save()
+
+            return HttpResponseRedirect('/tempo-producao/')
+
+        else:
+            print form.errors
+
+    else:
+        form = TempoProducaoForm(instance=tempo_producao)
+
+    context_dict['form'] = form
+
+    return render_to_response('absorcao/tempo-producao-edit.html', context_dict,
+                              context)

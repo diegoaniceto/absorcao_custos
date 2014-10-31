@@ -1,0 +1,29 @@
+{% extends 'absorcao/base.html' %}
+
+{% load static %}
+
+{% block body_block %}
+
+    <h1>Tempo de Produção</h1>
+    <div class="table-responsive">
+	  <table class="table table-hover table-striped">
+    	<thead>
+    		<th>Produto</th>
+    		<th>Departamento</th>
+    		<th>Tempo unitário</th>
+    		<th>Ações</th>
+    	</thead>
+	    <tbody>
+		    {% for tempo in tempo_producao %}
+	    	<tr>
+		    <td><a href="/produto/{{ produto.id }}">{{ tempo.produto.nome }}</a></td>
+		    <td>{{ tempo.departamento.nome }}</td>
+		    <td>{{ tempo.tempo_unitario }}h</td>
+		    <td><a href="/tempo-producao/edit/{{ tempo.id }}"><span class="glyphicon glyphicon-pencil"></span></a></td>
+	    	</tr>
+		    {% endfor %}
+	    </tbody>
+	  </table>
+	</div>
+
+{% endblock %}
