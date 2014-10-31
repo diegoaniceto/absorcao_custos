@@ -1,0 +1,24 @@
+{% extends 'absorcao/base.html' %}
+
+{% load static %}
+
+{% block title %}Login{% endblock %}
+
+{% block body_block %}
+
+<div class="col-md-offset-5">
+    <h1>Entrar</h1>
+    <div class="row">
+        <form id="login_form" class="col-md-7" method="post" action="/login/">
+            {% csrf_token %}
+            Usuário: <input type="text" class="input-block-level form-control" name="username" value="" size="50" />
+            <br />
+            Senha: <input type="password" class="input-block-level form-control" name="password" value="" size="50" />
+            <br />
+
+            <input type="submit" class="btn btn-primary btn-lg btn-block" value="Entrar" />
+        </form>
+    </div>
+</div>
+
+{% endblock %}

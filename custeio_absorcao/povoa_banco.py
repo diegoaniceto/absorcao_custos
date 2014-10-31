@@ -18,8 +18,8 @@ def populate():
     mar = add_mes('Mar', 03, 2014)
 
     add_prod_mes(prod_camisetas, mar, 18000, 10)
-    add_prod_mes(prod_vestidos, fev, 4200, 22)
-    add_prod_mes(prod_vestidos, fev, 13000, 16)
+    add_prod_mes(prod_vestidos, mar, 4200, 22)
+    add_prod_mes(prod_vestidos, mar, 13000, 16)
 
     add_tempo_producao(prod_camisetas, dep_corte, 0.3)
     add_tempo_producao(prod_vestidos, dep_corte, 0.7)
@@ -32,23 +32,23 @@ def populate():
     custo_dir_aviamentos = add_custo_direto('Aviamentos')
     custo_dir_mod = add_custo_direto('Mao-de-obra Direta')
 
-    add_custo_direto_produto(prod_camisetas, custo_dir_tecido, 3.00)
-    add_custo_direto_produto(prod_camisetas, custo_dir_aviamentos, 0.25)
-    add_custo_direto_produto(prod_camisetas, custo_dir_mod, 0.5)
-    add_custo_direto_produto(prod_vestidos, custo_dir_tecido, 4.00)
-    add_custo_direto_produto(prod_vestidos, custo_dir_aviamentos, 0.75)
-    add_custo_direto_produto(prod_vestidos, custo_dir_mod, 1.00)
-    add_custo_direto_produto(prod_calcas, custo_dir_tecido, 3.00)
-    add_custo_direto_produto(prod_calcas, custo_dir_aviamentos, 0.50)
-    add_custo_direto_produto(prod_calcas, custo_dir_mod, 0.75)
+    add_custo_direto_produto(prod_camisetas, custo_dir_tecido, mar, 3.00)
+    add_custo_direto_produto(prod_camisetas, custo_dir_aviamentos, mar, 0.25)
+    add_custo_direto_produto(prod_camisetas, custo_dir_mod, mar, 0.5)
+    add_custo_direto_produto(prod_vestidos, custo_dir_tecido, mar, 4.00)
+    add_custo_direto_produto(prod_vestidos, custo_dir_aviamentos, mar, 0.75)
+    add_custo_direto_produto(prod_vestidos, custo_dir_mod, mar, 1.00)
+    add_custo_direto_produto(prod_calcas, custo_dir_tecido, mar, 3.00)
+    add_custo_direto_produto(prod_calcas, custo_dir_aviamentos, mar, 0.50)
+    add_custo_direto_produto(prod_calcas, custo_dir_mod, mar, 0.75)
 
-    add_custo_indireto('Alguel', 24000)
-    add_custo_indireto('Energia Eletrica', 42000)
-    add_custo_indireto('Salários Pessoal Supervisao', 25000)
-    add_custo_indireto('Mao-de-obra Indireta', 35000)
-    add_custo_indireto('Depreciacao', 32000)
-    add_custo_indireto('Materiais de Consumo', 12000)
-    add_custo_indireto('Seguros', 20000)
+    add_custo_indireto('Alguel', 24000, 17.50, 19.17, 17.50, 25.00, 20.83)
+    add_custo_indireto('Energia Eletrica', 42000, 15.48, 13.10, 11.90, 33.33, 26.19)
+    add_custo_indireto('Salários Pessoal Supervisao', 25000, 15.60, 13.40, 21.00, 28.00, 22.00)
+    add_custo_indireto('Mao-de-obra Indireta', 35000, 14.29, 9.71, 19.14, 34.29, 22.57)
+    add_custo_indireto('Depreciacao', 32000, 12.50, 14.06, 15.31, 29.69, 28.44)
+    add_custo_indireto('Materiais de Consumo', 12000, 16.67, 8.33, 15.00, 35.00, 24)
+    add_custo_indireto('Seguros', 20000, 12.00, 30.00, 10.00, 24.50, 23.50)
 
     add_despesa('Administrativas', 50000)
     add_despesa('Com Vendas', 43000)
@@ -80,13 +80,13 @@ def add_custo_direto(nome):
     return cd
 
 
-def add_custo_direto_produto(produto, custo_direto, valor_unitario):
-    cdp = CustoDiretoProduto.objects.get_or_create(produto=produto, custo_direto=custo_direto, valor_unitario=valor_unitario)[0]
+def add_custo_direto_produto(produto, custo_direto, mes, valor_unitario):
+    cdp = CustoDiretoProduto.objects.get_or_create(produto=produto, custo_direto=custo_direto, mes=mes, valor_unitario=valor_unitario)[0]
     return cdp
 
 
-def add_custo_indireto(nome, valor_mensal):
-    ci = CustoIndireto.objects.get_or_create(nome=nome, valor_mensal=valor_mensal)[0]
+def add_custo_indireto(nome, valor_mensal, porc_compras, porc_almoxarifado, porc_adm_prod, porc_corte, porc_acabamento):
+    ci = CustoIndireto.objects.get_or_create(nome=nome, valor_mensal=valor_mensal, porc_compras=porc_compras, porc_almoxarifado=porc_almoxarifado, porc_adm_prod=porc_adm_prod, porc_corte=porc_corte, porc_acabamento=porc_acabamento)[0]
     return ci
 
 
@@ -96,7 +96,7 @@ def add_despesa(nome, valor_mensal):
 
 
 def add_mes(abreviacao, numero, ano):
-    m = Mes.objects.get_or_create(abreviacao=abreviacao, ano=ano, numero=numero)
+    m = Mes.objects.get_or_create(abreviacao=abreviacao, ano=ano, numero=numero)[0]
     return m
 
 

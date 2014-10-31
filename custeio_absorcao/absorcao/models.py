@@ -1,3 +1,4 @@
+from django.contrib.auth.models import User
 from django.db import models
 
 
@@ -24,6 +25,13 @@ class Mes(models.Model):
     def __unicode__(self):
         return self.abreviacao
 
+
+class PerfilUsuario(models.Model):
+    user = models.OneToOneField(User)
+
+    def __unicode__(self):
+        return self.user.username
+        
 
 class ProdutoMes(models.Model):
     produto = models.ForeignKey(Produto)
@@ -54,6 +62,7 @@ class CustoDireto(models.Model):
 class CustoDiretoProduto(models.Model):
     produto = models.ForeignKey(Produto)
     custo_direto = models.ForeignKey(CustoDireto)
+    mes = models.ForeignKey(Mes)
     valor_unitario = models.DecimalField(decimal_places=2, max_digits=10)
     
     def __unicode__(self):
@@ -63,6 +72,11 @@ class CustoDiretoProduto(models.Model):
 class CustoIndireto(models.Model):
     nome = models.CharField(max_length=128)
     valor_mensal = models.DecimalField(decimal_places=2, max_digits=10)
+    porc_compras = models.DecimalField(decimal_places=2, max_digits=10)
+    porc_almoxarifado = models.DecimalField(decimal_places=2, max_digits=10)
+    porc_adm_prod = models.DecimalField(decimal_places=2, max_digits=10)
+    porc_corte = models.DecimalField(decimal_places=2, max_digits=10)
+    porc_acabamento = models.DecimalField(decimal_places=2, max_digits=10)
 
     def __unicode__(self):
         return self.nome
