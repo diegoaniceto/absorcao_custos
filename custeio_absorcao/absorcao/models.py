@@ -1,3 +1,4 @@
+from django.contrib.auth.models import User
 from django.db import models
 
 
@@ -24,6 +25,13 @@ class Mes(models.Model):
     def __unicode__(self):
         return self.abreviacao
 
+
+class PerfilUsuario(models.Model):
+    user = models.OneToOneField(User)
+
+    def __unicode__(self):
+        return self.user.username
+        
 
 class ProdutoMes(models.Model):
     produto = models.ForeignKey(Produto)

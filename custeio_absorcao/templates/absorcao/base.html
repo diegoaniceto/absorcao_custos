@@ -29,11 +29,10 @@
               </ul>
               <ul class="nav navbar-nav pull-right">
                 {% if user.is_authenticated %}
-                 <li class="navbar-text">Welcome, {{ user.username }}!</li>
-                 <li><a href="/logout/">Logout</a></li>
+                 <li class="navbar-text">{{ user.username }}</li>
+                 <li><a href="/logout/">Sair</a></li>
                 {% else %}
-                 <li><a href="/register/">Register</a></li>
-                 <li><a href="/login/">Login</a></li>
+                 <li><a href="/login/">Entrar</a></li>
                 {% endif %}
                </ul>
             </div><!--/.nav-collapse -->
@@ -41,6 +40,7 @@
         </div>
     <div class="container-fluid">
         <div class="row-fluid">
+            {% if user.is_authenticated %}
             <div class="col-md-3">
                 <div class="well sidebar-nav">
                     <!--- Empty for the timebeing -->
@@ -56,6 +56,7 @@
                 </div>
                 <!--/.well -->
             </div>
+            {% endif %}
             <!--/span-->
             <div class="col-md-9">
                 {% block body_block %}
