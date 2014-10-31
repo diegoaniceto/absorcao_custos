@@ -1,0 +1,27 @@
+{% extends 'absorcao/base.html' %}
+
+{% load static %}
+
+{% block body_block %}
+
+    <h1>Editando Despesa</h1>
+
+    <div class="col-md-6"> 
+
+        <form id="despesa_form" method="post" action="/despesa/edit/{{ despesa.id }}/">
+
+            {% csrf_token %}
+            {% for hidden in form.hidden_fields %}
+                {{ hidden }}
+            {% endfor %}    
+
+            {% load bootstrap3 %}
+            {% bootstrap_form form %}
+
+            <input type="submit" name="submit" value="Salvar" class="btn btn-primary pull-right"/>
+
+            <a href="/despesa/edit/{{ despesa.id }}" class="btn btn-small btn-default pull-right">Cancelar</a>
+        </form>
+    </div>
+
+{% endblock %}
