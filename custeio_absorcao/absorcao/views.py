@@ -3,8 +3,8 @@ from django.shortcuts import render_to_response
 from models import Produto, ProdutoMes, CustoDireto, CustoDiretoProduto
 from django.http import HttpResponseRedirect, HttpResponse
 from django.contrib.auth import authenticate, login, logout
-from models import TempoProducao
-from forms import ProdutoForm, TempoProducaoForm
+from models import TempoProducao, CustoIndireto, Despesa
+from forms import ProdutoForm, TempoProducaoForm, Departamento
 
 
 def index(request):
@@ -172,9 +172,16 @@ def relatorio(request):
     context_dict = {}
 
     ci = CustoIndireto.objects.all()
-    despesas = Despesa.objects.all()
+    departamentos = Departamento.objects.all()
 
-    context_dict['custo_indireto'] = ci
-    context_dict['despesas'] = despesas
+    context_dict['departamentos'] = departamentos
+    context_dict['custeio'] = []
+    for idx, custo in enumerate(ci):
+        compra = float(custo.porc_compras) * 0.01 * float(custo.valor_mensal)
+        almoxarifado = float(custo.porc_almoxarifado) * 0.01 * float(custo.valor_mensal)
+        adm_prod = float(custo.porc_adm_prod) * 0.01 * float(custo.valor_mensal)
+        corte = float(custo.porc_corte) * 0.01 * float(custo.valor_mensal)
+        acabamento = float(custo.porc_acabamento) * 0.01 * float(custo.valor_mensal)
+        context_dict['custeio'].append((custo.nome, compra, almoxarifado, adm_prod, corte, acabamento, custo.valor_mensal))
 
     return render_to_response('absorcao/relatorio.html', context_dict, context)

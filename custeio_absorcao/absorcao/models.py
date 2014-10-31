@@ -72,6 +72,11 @@ class CustoDiretoProduto(models.Model):
 class CustoIndireto(models.Model):
     nome = models.CharField(max_length=128)
     valor_mensal = models.DecimalField(decimal_places=2, max_digits=10)
+    porc_compras = models.DecimalField(decimal_places=2, max_digits=10)
+    porc_almoxarifado = models.DecimalField(decimal_places=2, max_digits=10)
+    porc_adm_prod = models.DecimalField(decimal_places=2, max_digits=10)
+    porc_corte = models.DecimalField(decimal_places=2, max_digits=10)
+    porc_acabamento = models.DecimalField(decimal_places=2, max_digits=10)
 
     def __unicode__(self):
         return self.nome

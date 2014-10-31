@@ -5,6 +5,29 @@
 {% block body_block %}
 
     <h1>Relatório</h1>
-    
+    <div class="table-responsive">
+	  <table class="table table-hover sortable">
+    	<thead>
+    		<th></th>
+    		{% for departamento in departamentos %}
+    		<th>{{ departamento.nome }}</th>
+		    {% endfor %}
+		    <th>Totais</th>
+    	</thead>
+	    <tbody>
+		    {% for c in custeio %}
+		    	<tr>
+		    	{% for a in c %}
+		    		{% if forloop.counter == 1 %}
+		    			<td>{{a}}</td>
+		    		{% else %}
+		    			<td>R$ {{a}}</td>
+		    		{% endif %}
+		    	{% endfor %}
+		    	</tr>
+		    {% endfor %}
+	    </tbody>
+	  </table>
+	</div>
 
 {% endblock %}
