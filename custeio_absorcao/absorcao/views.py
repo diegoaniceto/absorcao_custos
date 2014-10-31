@@ -1,8 +1,10 @@
 from django.template import RequestContext
 from django.shortcuts import render_to_response
-from django.http import HttpResponseRedirect
 from models import Produto, ProdutoMes, CustoDireto, CustoDiretoProduto
-from forms import ProdutoForm
+from django.http import HttpResponseRedirect, HttpResponse
+from django.contrib.auth import authenticate, login, logout
+from models import TempoProducao
+from forms import ProdutoForm, TempoProducaoForm
 
 
 def index(request):
@@ -92,3 +94,77 @@ def custo_direto_edit(request, mes=None):
     context = RequestContext(request)
     context_dict = {}
     return render_to_response('absorcao/custo_direto-edit.html', context_dict, context)
+
+def user_login(request):
+    context = RequestContext(request)
+
+    if request.method == 'POST':
+        username = request.POST['username']
+        password = request.POST['password']
+
+        user = authenticate(username=username, password=password)
+
+        if user:
+            if user.is_active:
+                login(request, user)
+                return HttpResponseRedirect('/')
+            else:
+                return HttpResponse("Sua conta esta desabilitada, contacte o administrador do sistema.")
+        else:
+            print "Invalid login details: {0}, {1}".format(username, password)
+            return HttpResponse("Invalid login details supplied.")
+
+    else:
+        return render_to_response('absorcao/login.html', {}, context)
+
+
+def user_logout(request):
+    # Since we know the user is logged in, we can now just log them out.
+    logout(request)
+
+    # Take the user back to the homepage.
+    return HttpResponseRedirect('/')
+
+
+def tempo_producao(request):
+    context = RequestContext(request)
+    context_dict = {}
+
+    tempo_producao = TempoProducao.objects.all()
+
+    context_dict['tempo_producao'] = tempo_producao
+
+    return render_to_response('absorcao/tempo-producao.html', context_dict, context)
+
+
+def tempo_producao_edit(request, id_tempo):
+    context = RequestContext(request)
+    context_dict = {}
+    try:
+        tempo_producao = TempoProducao.objects.get(id=id_tempo)
+
+        context_dict['tempo_producao'] = tempo_producao
+
+    except TempoProducao.DoesNotExist:
+        # We get here if we didn't find the specified experiment.
+        return render_to_response('absorcao/tempo-producao-edit.html',
+                                  context_dict, context)
+
+    if request.POST:
+        form = TempoProducaoForm(request.POST, instance=tempo_producao)
+        if form.is_valid():
+
+            form.save()
+
+            return HttpResponseRedirect('/tempo-producao/')
+
+        else:
+            print form.errors
+
+    else:
+        form = TempoProducaoForm(instance=tempo_producao)
+
+    context_dict['form'] = form
+
+    return render_to_response('absorcao/tempo-producao-edit.html', context_dict,
+                              context)

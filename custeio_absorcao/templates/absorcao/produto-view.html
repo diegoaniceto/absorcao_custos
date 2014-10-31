@@ -2,6 +2,8 @@
 
 {% load static %}
 
+{% block title %}Visualizar Produto{% endblock %}
+
 {% block body_block %}
 
     <h1>Produto: {{ produto.nome }}</h1>
@@ -11,7 +13,7 @@
 			<strong>Nome:</strong> {{ produto.nome }}
 
 			<div class="table-responsive">
-			  <table class="table table-hover table-bordered table-striped">
+			  <table class="table table-hover table-bordered table-striped sortable">
 		    	<thead>
 		    		<th>Mês</th>
 		    		<th>Produção mensal</th>

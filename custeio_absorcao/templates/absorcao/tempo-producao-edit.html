@@ -2,15 +2,15 @@
 
 {% load static %}
 
-{% block title %}Editar Produto{% endblock %}
+{% block title %}Editar Tempo Produção{% endblock %}
 
 {% block body_block %}
 
-    <h1>Editando Produto</h1>
+    <h1>Editando Tempo de Produção</h1>
 
     <div class="col-md-6"> 
 
-		<form id="produto_form" method="post" action="/produto/edit/{{ produto.id }}/">
+		<form id="tempo_form" method="post" action="/tempo-producao/edit/{{ tempo_producao.id }}/">
 
 			{% csrf_token %}
 		    {% for hidden in form.hidden_fields %}
@@ -22,7 +22,7 @@
 
 			<input type="submit" name="submit" value="Salvar" class="btn btn-primary pull-right"/>
 
-		    <a href="/produto" class="btn btn-small btn-default pull-right">Cancelar</a>
+		    <a href="/tempo-producao/{{ tempo.id }}" class="btn btn-small btn-default pull-right">Cancelar</a>
 		</form>
     </div>
 
