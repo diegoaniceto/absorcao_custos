@@ -56,3 +56,19 @@ def produto_edit(request, id_produto=None):
                               context)
 
 
+def produto_view(request, id_produto=None):
+    context = RequestContext(request)
+    context_dict = {}
+    try:
+        produto = Produto.objects.get(id=id_produto)
+
+        context_dict['produto'] = produto
+
+    except Produto.DoesNotExist:
+        # We get here if we didn't find the specified experiment.
+        return render_to_response('absorcao/produto-view.html',
+                                  context_dict, context)
+
+    return render_to_response('absorcao/produto-view.html', context_dict,
+                              context)
+

@@ -1,0 +1,20 @@
+{% extends 'absorcao/base.html' %}
+
+{% load static %}
+
+{% block body_block %}
+
+    <h1>Produto: {{ produto.nome }}</h1>
+
+    <div class="col-md-6"> 
+
+			<strong>Nome:</strong> {{ produto.nome }}
+			<br>
+		    <strong>Produção mensal:</strong> {{ produto.producao_mensal }}
+		    <br>
+		    <strong>Preço de venda unitário:</strong> R$ {{ produto.preco_venda_unitario }}
+		    <br>
+		    <a href="/produto/edit/{{ produto.id }}"><span class="glyphicon glyphicon-pencil"></span></a>
+    </div>
+
+{% endblock %}
