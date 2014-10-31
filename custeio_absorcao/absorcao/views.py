@@ -100,10 +100,7 @@ def user_login(request):
 
 
 def user_logout(request):
-    # Since we know the user is logged in, we can now just log them out.
     logout(request)
-
-    # Take the user back to the homepage.
     return HttpResponseRedirect('/')
 
 
@@ -149,3 +146,16 @@ def tempo_producao_edit(request, id_tempo):
 
     return render_to_response('absorcao/tempo-producao-edit.html', context_dict,
                               context)
+
+
+def relatorio(request):
+    context = RequestContext(request)
+    context_dict = {}
+
+    ci = CustoIndireto.objects.all()
+    despesas = Despesa.objects.all()
+
+    context_dict['custo_indireto'] = ci
+    context_dict['despesas'] = despesas
+
+    return render_to_response('absorcao/relatorio.html', context_dict, context)

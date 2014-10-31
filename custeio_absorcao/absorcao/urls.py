@@ -10,4 +10,5 @@ urlpatterns = patterns('',
                        url(r'^logout/$', views.user_logout, name='logout'),
                        url(r'^tempo-producao/$', views.tempo_producao, name='tempo-producao'),
                        url(r'^tempo-producao/edit/(?P<id_tempo>\w+)/$', views.tempo_producao_edit, name='tempo-producao_edit'),
+                       url(r'^relatorio/$', views.relatorio, name='relatorio'),
                        )
