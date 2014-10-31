@@ -11,11 +11,28 @@ class Departamento(models.Model):
 
 class Produto(models.Model):
     nome = models.CharField(max_length=128)
+
+    def __unicode__(self):
+        return self.nome
+
+
+class Mes(models.Model):
+    abreviacao = models.CharField(max_length=5)
+    ano = models.IntegerField()
+    numero = models.IntegerField()
+
+    def __unicode__(self):
+        return self.abreviacao
+
+
+class ProdutoMes(models.Model):
+    produto = models.ForeignKey(Produto)
+    mes = models.ForeignKey(Mes)
     producao_mensal = models.IntegerField()
     preco_venda_unitario = models.DecimalField(decimal_places=2, max_digits=10)
 
     def __unicode__(self):
-        return self.nome
+        return str(self.produto) + ' - ' + str(self.mes)
 
 
 class TempoProducao(models.Model):

@@ -10,9 +10,16 @@ def populate():
     dep_almox = add_departamento('Almoxarifado', False)
     dep_adm = add_departamento('Adm. Producao', False)
 
-    prod_camisetas = add_produto('Camisetas', 18000, 10)
-    prod_vestidos = add_produto('Vestidos', 4200, 22)
-    prod_calcas = add_produto('Calcas', 13000, 16)
+    prod_camisetas = add_produto('Camisetas')
+    prod_vestidos = add_produto('Vestidos')
+    prod_calcas = add_produto('Calcas')
+
+    fev = add_mes('Fev', 02, 2014)
+    mar = add_mes('Mar', 03, 2014)
+
+    add_prod_mes(prod_camisetas, mar, 18000, 10)
+    add_prod_mes(prod_vestidos, fev, 4200, 22)
+    add_prod_mes(prod_vestidos, fev, 13000, 16)
 
     add_tempo_producao(prod_camisetas, dep_corte, 0.3)
     add_tempo_producao(prod_vestidos, dep_corte, 0.7)
@@ -53,8 +60,8 @@ def populate():
   #        print "- {0} - {1}".format(str(c), str(p))
 
 
-def add_produto(nome, pm, pv):
-    p = Produto.objects.get_or_create(nome=nome, producao_mensal=pm, preco_venda_unitario=pv)[0]
+def add_produto(nome):
+    p = Produto.objects.get_or_create(nome=nome)[0]
     return p
 
 
@@ -86,6 +93,16 @@ def add_custo_indireto(nome, valor_mensal):
 def add_despesa(nome, valor_mensal):
     d = Despesa.objects.get_or_create(nome=nome, valor_mensal=valor_mensal)[0]
     return d
+
+
+def add_mes(abreviacao, numero, ano):
+    m = Mes.objects.get_or_create(abreviacao=abreviacao, ano=ano, numero=numero)
+    return m
+
+
+def add_prod_mes(produto, mes, pm, pv):
+    pm = ProdutoMes.objects.get_or_create(produto=produto, mes=mes, producao_mensal=pm, preco_venda_unitario=pv)
+    return pm
 
 # Start execution here!
 if __name__ == '__main__':

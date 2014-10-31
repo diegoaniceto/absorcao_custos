@@ -1,7 +1,7 @@
 from django.template import RequestContext
 from django.shortcuts import render_to_response
 from django.http import HttpResponseRedirect
-from models import Produto
+from models import Produto, ProdutoMes
 from forms import ProdutoForm
 
 
@@ -61,8 +61,10 @@ def produto_view(request, id_produto=None):
     context_dict = {}
     try:
         produto = Produto.objects.get(id=id_produto)
+        produto_meses = ProdutoMes.objects.filter(produto=produto)
 
         context_dict['produto'] = produto
+        context_dict['produto_meses'] = produto_meses
 
     except Produto.DoesNotExist:
         # We get here if we didn't find the specified experiment.
