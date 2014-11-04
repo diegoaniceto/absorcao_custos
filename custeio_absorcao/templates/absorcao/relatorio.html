@@ -2,6 +2,8 @@
 
 {% load static %}
 
+{% load humanize %}
+
 {% block body_block %}
 
     <h1>Relatório</h1>
@@ -9,9 +11,11 @@
 	  <table class="table table-hover sortable">
     	<thead>
     		<th></th>
-    		{% for departamento in departamentos %}
-    		<th>{{ departamento.nome }}</th>
-		    {% endfor %}
+    		<th>Compras</th>
+    		<th>Almoxarifado</th>
+    		<th>Adm. Produção</th>
+    		<th>Corte e Costura</th>
+    		<th>Acabamento</th>
 		    <th>Totais</th>
     	</thead>
 	    <tbody>
@@ -21,7 +25,7 @@
 		    		{% if forloop.counter == 1 %}
 		    			<td>{{a}}</td>
 		    		{% else %}
-		    			<td>R$ {{a}}</td>
+		    			<td>R$ {{a|floatformat:2|intcomma}}</td>
 		    		{% endif %}
 		    	{% endfor %}
 		    	</tr>
