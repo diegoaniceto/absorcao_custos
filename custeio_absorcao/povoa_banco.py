@@ -19,7 +19,7 @@ def populate():
 
     add_prod_mes(prod_camisetas, mar, 18000, 10)
     add_prod_mes(prod_vestidos, mar, 4200, 22)
-    add_prod_mes(prod_vestidos, mar, 13000, 16)
+    add_prod_mes(prod_calcas, mar, 13000, 16)
 
     add_tempo_producao(prod_camisetas, dep_corte, 0.3)
     add_tempo_producao(prod_vestidos, dep_corte, 0.7)

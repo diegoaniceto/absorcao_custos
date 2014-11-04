@@ -7,6 +7,7 @@
 {% block body_block %}
 
     <h1>Relatório</h1>
+    <p>Mapa de Rateio dos Custos Indiretos de Fabricação aos Departamentos de Produção</p>
     <div class="table-responsive">
 	  <table class="table table-hover sortable">
     	<thead>
@@ -30,6 +31,89 @@
 		    	{% endfor %}
 		    	</tr>
 		    {% endfor %}
+		    <!-- Subtotal 1 -->
+		    <tr>
+		    	<td><em>Subtotal 1</em></td>
+		    	{% for sub1 in subtotal1 %}
+				<td><em>R$ {{sub1|floatformat:2|intcomma}}</em></td>
+		    	{% endfor %}
+		    </em></tr>
+		    <tr>
+		    	<td>
+		    		Rateio Compras
+		    	</td>
+		    	{% for rat_compras in rateio_compras %}
+				<td>R$ {{rat_compras|floatformat:2|intcomma}}</td>
+		    	{% endfor %}
+		    </tr>
+		    <!-- Subtotal 2 -->
+		    <tr>
+		    	<td><em>Subtotal 2</em></td>
+		    	{% for sub2 in subtotal2 %}
+				<td><em>R$ {{sub2|floatformat:2|intcomma}}</em></td>
+		    	{% endfor %}
+		    </em></tr>
+		    <tr>
+		    	<td>
+		    		Rateio Compras
+		    	</td>
+		    	{% for rat_almox in rateio_almox %}
+				<td>R$ {{rat_almox|floatformat:2|intcomma}}</td>
+		    	{% endfor %}
+		    </tr>
+		    <!-- Subtotal 3 -->
+		    <tr>
+		    	<td><em>Subtotal 3</em></td>
+		    	{% for sub3 in subtotal3 %}
+				<td><em>R$ {{sub3|floatformat:2|intcomma}}</em></td>
+		    	{% endfor %}
+		    </em></tr>
+		    <tr>
+		    	<td>
+		    		Rateio Adm. Produção
+		    	</td>
+		    	{% for rat_adm in rateio_adm %}
+				<td>R$ {{rat_adm|floatformat:2|intcomma}}</td>
+		    	{% endfor %}
+		    </tr>
+		    <tr>
+		    	<td><em><strong>
+		    		Total Depts. Produção
+		    	</strong></em></td>
+		    	{% for dept_prod in total_depts_prod %}
+				<td><em><strong>R$ {{dept_prod|floatformat:2|intcomma}}</strong></em></td>
+		    	{% endfor %}
+		    </tr>
+		    <!-- Numero de horas produtivas -->
+		    <tr>
+		    	<td>
+		    		Nº de Horas Produtivas
+		    	</td>
+		    	{% for horas in horas_prod %}
+				<td>
+					{% if horas %}
+						{{horas|floatformat:0}}h
+		    		{% else %}
+
+		    		{% endif %}
+				</td>
+		    	{% endfor %}
+		    </tr>
+		    <!-- Custo por hora -->
+		    <tr>
+		    	<td><em><strong>
+		    		Custo por hora
+		    	</strong></em></td>
+		    	{% for custo in custo_hora %}
+				<td><em><strong>
+					{% if custo %}
+						{{custo|floatformat:4}}$/h
+		    		{% else %}
+
+		    		{% endif %}
+				</strong></em></td>
+		    	{% endfor %}
+		    </tr>
 	    </tbody>
 	  </table>
 	</div>
