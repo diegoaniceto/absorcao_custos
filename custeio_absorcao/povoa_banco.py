@@ -8,11 +8,11 @@ def populate():
     dep_acabamento = add_departamento('Acabamento', True)
     dep_compras = add_departamento('Compras', False)
     dep_almox = add_departamento('Almoxarifado', False)
-    dep_adm = add_departamento('Adm. Producao', False)
+    dep_adm = add_departamento('Adm. Produção', False)
 
     prod_camisetas = add_produto('Camisetas')
     prod_vestidos = add_produto('Vestidos')
-    prod_calcas = add_produto('Calcas')
+    prod_calcas = add_produto('Calças')
 
     fev = add_mes('Fev', 02, 2014)
     mar = add_mes('Mar', 03, 2014)
@@ -30,7 +30,7 @@ def populate():
 
     custo_dir_tecido = add_custo_direto('Tecido')
     custo_dir_aviamentos = add_custo_direto('Aviamentos')
-    custo_dir_mod = add_custo_direto('Mao-de-obra Direta')
+    custo_dir_mod = add_custo_direto('Mão-de-obra Direta')
 
     add_custo_direto_produto(prod_camisetas, custo_dir_tecido, mar, 3.00)
     add_custo_direto_produto(prod_camisetas, custo_dir_aviamentos, mar, 0.25)
@@ -42,17 +42,17 @@ def populate():
     add_custo_direto_produto(prod_calcas, custo_dir_aviamentos, mar, 0.50)
     add_custo_direto_produto(prod_calcas, custo_dir_mod, mar, 0.75)
 
-    add_custo_indireto('Alguel', 24000, 17.50, 19.17, 17.50, 25.00, 20.83)
+    add_custo_indireto('Aluguel', 24000, 17.50, 19.17, 17.50, 25.00, 20.83)
     add_custo_indireto('Energia Eletrica', 42000, 15.48, 13.10, 11.90, 33.33, 26.19)
     add_custo_indireto('Salários Pessoal Supervisao', 25000, 15.60, 13.40, 21.00, 28.00, 22.00)
     add_custo_indireto('Mao-de-obra Indireta', 35000, 14.29, 9.71, 19.14, 34.29, 22.57)
-    add_custo_indireto('Depreciacao', 32000, 12.50, 14.06, 15.31, 29.69, 28.44)
+    add_custo_indireto('Depreciação', 32000, 12.50, 14.06, 15.31, 29.69, 28.44)
     add_custo_indireto('Materiais de Consumo', 12000, 16.67, 8.33, 15.00, 35.00, 24)
     add_custo_indireto('Seguros', 20000, 12.00, 30.00, 10.00, 24.50, 23.50)
 
     add_despesa('Administrativas', 50000)
     add_despesa('Com Vendas', 43000)
-    add_despesa('Comissoes (5 por cento das Vendas)', 43000)
+    add_despesa('Comissões (5 por cento das Vendas)', 43000)
 
     # Print out what we have added to the user.
 #    for c in Departamento.objects.all():
