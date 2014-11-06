@@ -3,6 +3,7 @@ from django.contrib.auth.models import User
 from django import forms
 from absorcao.models import Despesa, CustoIndireto
 from absorcao.models import ProdutoMes
+from absorcao.models import Mes
 
 
 class ProdutoForm(forms.ModelForm):
@@ -14,6 +15,7 @@ class ProdutoForm(forms.ModelForm):
 
 class ProdutoMesForm(forms.ModelForm):
     produto = forms.ModelChoiceField(queryset=Produto.objects.all(), empty_label=None)
+    mes = forms.ModelChoiceField(queryset=Mes.objects.all(), empty_label=None)
     producao_mensal = forms.IntegerField()
     preco_venda_unitario = forms.DecimalField(decimal_places=2)
 
