@@ -452,7 +452,7 @@ def custo_produto_vendido(num_mes, ano, nome_produto):
     produto = Produto.objects.get(nome=nome_produto)
     produto_mes = ProdutoMes.objects.get(produto=produto, mes=mes)
     print custo_total_unitario(mes, produto)
-    return custo_total_unitario(mes, produto) * produto_mes.vendas_mes
+    return custo_total_unitario(mes, produto) * produto_mes.vendas_mensal
 
 
 # custo total * quantidade vendida = CPV
@@ -515,7 +515,7 @@ def vendas_mes(num_mes, ano, nome_produto):
     mes = Mes.objects.get(numero=num_mes, ano=ano)
     produto = Produto.objects.get(nome=nome_produto)
     produto_mes = ProdutoMes.objects.get(mes=mes, produto=produto)
-    return produto_mes.preco_venda_unitario * produto_mes.vendas_mes
+    return produto_mes.preco_venda_unitario * produto_mes.vendas_mensal
 
 
 def custo_por_hora(departamento):
