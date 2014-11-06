@@ -79,6 +79,40 @@
 		    		{% endif %}
 		    	{% endfor %}
 	    	</tr>
+	    	<tr class="bold">
+		    	{% for coluna in lucro_bruto %}
+		    		{% if forloop.counter == 1%}
+		    	 		<td>{{coluna}}</td>
+		    	 	{% else %}
+		    			<td>R$ {{coluna|floatformat:2|intcomma}}</td>
+		    		{% endif %}
+		    	{% endfor %}
+	    	</tr>
+	    	<!-- Diretos -->
+		    {% for despesa in despesas %}
+				<tr>
+			    	{% for coluna in despesa %}
+			    		{% if forloop.counter == 1%}
+			    	 		<td>{{coluna}}</td>
+			    	 	{% elif forloop.counter != 5 %}
+			    			<td>{{coluna}}</td>
+			    		{% else %}
+			    			<td>R$ {{coluna|floatformat:2|intcomma}}</td>
+			    		{% endif %}
+			    	{% endfor %}
+		    	</tr>
+		    {% endfor %}
+		    <tr class="bold em">
+		    	{% for coluna in lucro_antes_ir %}
+		    		{% if forloop.counter == 1%}
+		    	 		<td>{{coluna}}</td>
+		    	 	{% elif forloop.counter != 5 %}
+		    			<td>{{coluna}}</td>
+		    		{% else %}
+		    			<td>R$ {{coluna|floatformat:2|intcomma}}</td>
+		    		{% endif %}
+		    	{% endfor %}
+	    	</tr>
 	    </tbody>
 	  </table>
 	</div>

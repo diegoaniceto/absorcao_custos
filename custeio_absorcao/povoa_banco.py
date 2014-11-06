@@ -172,7 +172,7 @@ def populate():
 
     add_despesa('Administrativas', 50000)
     add_despesa('Com Vendas', 43000)
-    add_despesa('Comissões (5 por cento das Vendas)', 43000)
+    add_despesa('Comissões (porcentagem das vendas)', 5)
 
     # Print out what we have added to the user.
 #    for c in Departamento.objects.all():

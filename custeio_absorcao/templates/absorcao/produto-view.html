@@ -8,9 +8,7 @@
 
 {% load humanize %}
 
-    <div class="col-md-6">
-
-    		<h1>Produto: {{ produto.nome }}</h1>
+    		<h1>Visualizando Produto</h1>
 
 			<strong>Nome:</strong> {{ produto.nome }}
 			<br>
@@ -29,12 +27,11 @@
 			    	<tr>
 				    <td>{{ produto_mes.mes }}/{{produto_mes.mes.ano}}</td>
 				    <td>{{ produto_mes.producao_mensal|intcomma }}</td>
-				    <td>R$ {{ produto_mes.preco_venda_unitario }}</td>
+				    <td>R$ {{ produto_mes.preco_venda_unitario|floatformat:2 }}</td>
 				    <td><a href="/produto-mes/edit/{{ produto_mes.id }}"><span class="glyphicon glyphicon-pencil"></span></a></td>
 			    	</tr>
 				    {% endfor %}
 			    </tbody>
 			  </table>
-    </div>
 
 {% endblock %}

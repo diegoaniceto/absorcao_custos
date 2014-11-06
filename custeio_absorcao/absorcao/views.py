@@ -441,12 +441,36 @@ def dre(request):
     subtotal_cip[4] = cip_tabela[0][4] + cip_tabela[1][4]
     subtotal_cip[0] = 'Subtotal CIP'
 
+    # Lucro Bruto
+    lucro_bruto = [0, 0, 0, 0, 0]
+    lucro_bruto[CAMISETAS_INDEX] = float(vendas[CAMISETAS_INDEX]) - cpv[CAMISETAS_INDEX]
+    lucro_bruto[VESTIDOS_INDEX] = float(vendas[VESTIDOS_INDEX]) - cpv[VESTIDOS_INDEX]
+    lucro_bruto[VESTIDOS_INDEX] = float(vendas[VESTIDOS_INDEX]) - cpv[VESTIDOS_INDEX]
+    lucro_bruto[TOTAL_INDEX] = sum(lucro_bruto)
+    lucro_bruto[0] = "Lucro Bruto"
+
+    # Despesas
+    despesas = [[0, '-', '-', '-', 0], [0, '-', '-', '-', 0]]
+    despesas[0][TOTAL_INDEX] = Despesa.objects.get(nome='Administrativas').valor_mensal
+    despesas[0][NOME_INDEX] = 'Despesas Administrativas'
+    despesas[1][TOTAL_INDEX] = Despesa.objects.get(nome='Com Vendas').valor_mensal
+    despesas[1][TOTAL_INDEX] += Despesa.objects.get(nome='Comissões (porcentagem das vendas)').valor_mensal * (vendas[TOTAL_INDEX] / 100)
+    despesas[1][NOME_INDEX] = 'Despesas com Vendas'
+
+    # Lucro antes do IR
+    lucro_antes_ir = [0, '-', '-', '-', 0]
+    lucro_antes_ir[TOTAL_INDEX] = lucro_bruto[TOTAL_INDEX] - float(despesas[1][TOTAL_INDEX]) - float(despesas[0][TOTAL_INDEX])
+    lucro_antes_ir[NOME_INDEX] = 'Lucro Antes do IR'
+
     context_dict['vendas'] = vendas
     context_dict['cpv'] = cpv
     context_dict['cd'] = cds_tabela
     context_dict['subtotal_diretos'] = subtotal_diretos
     context_dict['cip'] = cip_tabela
     context_dict['subtotal_cip'] = subtotal_cip
+    context_dict['lucro_bruto'] = lucro_bruto
+    context_dict['despesas'] = despesas
+    context_dict['lucro_antes_ir'] = lucro_antes_ir
 
     return render_to_response('absorcao/dre.html', context_dict, context)
 
