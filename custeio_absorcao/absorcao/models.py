@@ -41,7 +41,7 @@ class ProdutoMes(models.Model):
     vendas_mensal = models.IntegerField()
 
     def __unicode__(self):
-        return str(self.produto) + ' - ' + str(self.mes)
+        return unicode(self.produto) + ' - ' + str(self.mes)
 
 
 class TempoProducao(models.Model):
@@ -50,7 +50,7 @@ class TempoProducao(models.Model):
     tempo_unitario = models.DecimalField(decimal_places=2, max_digits=5)
 
     def __unicode__(self):
-        return str(self.produto) + ' - ' + str(self.departamento) + ' - ' + str(self.tempo_unitario)
+        return unicode(self.produto.nome) + ' - ' + str(self.departamento) + ' - ' + str(self.tempo_unitario)
 
 
 class CustoDireto(models.Model):
@@ -67,7 +67,7 @@ class CustoDiretoProduto(models.Model):
     valor_unitario = models.DecimalField(decimal_places=2, max_digits=10)
     
     def __unicode__(self):
-        return str(self.produto) + ' - ' + str(self.valor_unitario)
+        return unicode(self.produto) + ' - ' + str(self.valor_unitario)
 
 
 class CustoIndireto(models.Model):
