@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from django.contrib.auth.decorators import login_required
 from django.template import RequestContext
 from django.shortcuts import render_to_response
 from forms import DespesaForm, CustoIndiretoForm
@@ -11,12 +12,14 @@ from models import Mes
 from forms import ProdutoForm, TempoProducaoForm
 
 
+@login_required
 def index(request):
     context = RequestContext(request)
     context_dict = {'boldmessage': "I am bold font from the context"}
     return render_to_response('absorcao/index.html', context_dict, context)
 
 
+@login_required
 def despesas_index(request):
     context = RequestContext(request)
     context_dict = {}
@@ -27,6 +30,8 @@ def despesas_index(request):
 
     return render_to_response('absorcao/despesas.html', context_dict, context)
 
+
+@login_required
 def despesa_edit(request, id_despesa=None):
     context = RequestContext(request)
     context_dict = {}
@@ -61,6 +66,7 @@ def despesa_edit(request, id_despesa=None):
                               context)
 
 
+@login_required
 def custo_indireto_index(request):
     context = RequestContext(request)
     context_dict = {}
@@ -72,6 +78,7 @@ def custo_indireto_index(request):
     return render_to_response('absorcao/custo-indireto.html', context_dict, context)
 
 
+@login_required
 def custo_indireto_edit(request, id_custo_indireto=None):
     context = RequestContext(request)
     context_dict = {}
@@ -106,6 +113,7 @@ def custo_indireto_edit(request, id_custo_indireto=None):
                         context_dict, context)
 
 
+@login_required
 def produto_edit(request, id_produto=None):
     context = RequestContext(request)
     context_dict = {}
@@ -139,6 +147,8 @@ def produto_edit(request, id_produto=None):
     return render_to_response('absorcao/produto-edit.html', context_dict,
                               context)
 
+
+@login_required
 def produto_index(request):
     context = RequestContext(request)
     context_dict = {}
@@ -150,6 +160,7 @@ def produto_index(request):
     return render_to_response('absorcao/produto.html', context_dict, context)
 
 
+@login_required
 def produto_edit(request, id_produto=None):
     context = RequestContext(request)
     context_dict = {}
@@ -184,6 +195,7 @@ def produto_edit(request, id_produto=None):
                               context)
 
 
+@login_required
 def produto_view(request, id_produto=None):
     context = RequestContext(request)
     context_dict = {}
@@ -202,6 +214,8 @@ def produto_view(request, id_produto=None):
     return render_to_response('absorcao/produto-view.html', context_dict,
                               context)
 
+
+@login_required
 def custo_direto_index(request):
     context = RequestContext(request)
     context_dict = {}
@@ -243,6 +257,8 @@ def custo_direto_index(request):
     
     return render_to_response('absorcao/custo_direto.html', context_dict, context)
 
+
+@login_required
 def custo_direto_mes(request, mes):
     context = RequestContext(request)
     context_dict = {}
@@ -263,6 +279,8 @@ def custo_direto_mes(request, mes):
     
     return render_to_response('absorcao/custo_direto.html', context_dict, context)
 
+
+@login_required
 def custo_direto_edit(request, mes=None):
     context = RequestContext(request)
     context_dict = {}
@@ -283,6 +301,8 @@ def custo_direto_edit(request, mes=None):
     
     return render_to_response('absorcao/custo_direto-edit.html', context_dict, context)
 
+
+@login_required
 def custo_direto_save(request, mes=None):
     context = RequestContext(request)
     context_dict = {}
@@ -298,6 +318,7 @@ def custo_direto_save(request, mes=None):
     context_dict['status'] = True
     
     return render_to_response('absorcao/any-save.html', context_dict, context)
+
 
 def user_login(request):
     context = RequestContext(request)
@@ -322,11 +343,13 @@ def user_login(request):
         return render_to_response('absorcao/login.html', {}, context)
 
 
+@login_required
 def user_logout(request):
     logout(request)
     return HttpResponseRedirect('/')
 
 
+@login_required
 def tempo_producao(request):
     context = RequestContext(request)
     context_dict = {}
@@ -338,6 +361,7 @@ def tempo_producao(request):
     return render_to_response('absorcao/tempo-producao.html', context_dict, context)
 
 
+@login_required
 def tempo_producao_edit(request, id_tempo):
     context = RequestContext(request)
     context_dict = {}
@@ -372,7 +396,7 @@ def tempo_producao_edit(request, id_tempo):
 
 # DRE =================================
 
-
+@login_required
 def dre(request):
     context = RequestContext(request)
     context_dict = {}
@@ -531,6 +555,7 @@ def custo_por_hora(departamento):
 # RELATORIO =================================
 
 
+@login_required
 def relatorio(request):
     context = RequestContext(request)
     context_dict = {}

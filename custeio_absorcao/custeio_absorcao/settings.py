@@ -12,6 +12,8 @@ STATIC_PATH = os.path.join(PROJECT_PATH, 'static')
 TEMPLATE_PATH = os.path.join(PROJECT_PATH, 'templates')
 DATABASE_PATH = os.path.join(PROJECT_PATH, 'bd_absorcao.db')
 
+LOGIN_URL = '/login/'
+
 ADMINS = (
     # ('Your Name', 'your_email@example.com'),
 )
