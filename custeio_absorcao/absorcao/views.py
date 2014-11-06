@@ -291,10 +291,127 @@ def tempo_producao_edit(request, id_tempo):
     return render_to_response('absorcao/tempo-producao-edit.html', context_dict,
                               context)
 
+# DRE =================================
+
+
+def dre(request):
+    context = RequestContext(request)
+    context_dict = {}
+
+    NOME_INDEX = 0
+    CAMISETAS_INDEX = 1
+    VESTIDOS_INDEX = 2
+    CALCAS_INDEX = 3
+    TOTAL_INDEX = 4
+
+    # Vendas
+    vendas = [0, 0, 0, 0, 0]
+    vendas[CAMISETAS_INDEX] = vendas_mes(03, 2014, 'Camisetas')
+    vendas[VESTIDOS_INDEX] = vendas_mes(03, 2014, 'Vestidos')
+    vendas[CALCAS_INDEX] = vendas_mes(03, 2014, 'Calcas')
+    vendas[TOTAL_INDEX] = sum(vendas)
+    vendas[NOME_INDEX] = 'Vendas'
+
+    # Custo de Produtos Vendidos
+    cpv = [0, 0, 0, 0, 0]
+    cpv[CAMISETAS_INDEX] = custo_produto_vendido(03, 2014, 'Camisetas')
+    cpv[VESTIDOS_INDEX] = custo_produto_vendido(03, 2014, 'Vestidos')
+    cpv[CALCAS_INDEX] = custo_produto_vendido(03, 2014, 'Calcas')
+    cpv[TOTAL_INDEX] = sum(cpv)
+    cpv[NOME_INDEX] = 'Custos dos Produtos Vendidos'
+
+    context_dict['vendas'] = vendas
+    context_dict['cpv'] = cpv
+
+    return render_to_response('absorcao/dre.html', context_dict, context)
+
+
+def custo_produto_vendido(num_mes, ano, nome_produto):
+    mes = Mes.objects.get(ano=ano, numero=num_mes)
+    produto = Produto.objects.get(nome=nome_produto)
+    produto_mes = ProdutoMes.objects.get(produto=produto, mes=mes)
+    produto_mes.quantidade_vendas = produto_mes.producao_mensal  # FIX ME
+    print custo_total_unitario(mes, produto)
+    return custo_total_unitario(mes, produto) * produto_mes.quantidade_vendas
+
+
+# custo total * quantidade vendida = CPV
+# Deve ser 6.83 para camisetas
+def custo_total_unitario(mes, produto):
+    custo_dir = custo_direto_unitario_total(produto, mes)
+    custo_indir = custo_indireto_unitario_total(produto)
+    return float(custo_dir) + custo_indir
+
+
+# Custo indireto unitario total + custo direto unitario total = Custo total
+# Eh a soma dos custos indiretos por departamento
+def custo_indireto_unitario_total(produto):
+    deptos = Departamento.objects.filter(producao=True)
+    total = 0
+    for d in deptos:
+        total += custo_indireto_unitario_por_depto(produto, d)
+    return total
+
+
+def custo_indireto_unitario_por_depto(produto, departamento):
+    tempo_producao = TempoProducao.objects.get(produto=produto, departamento=departamento)
+    #tempo_producao.tempo_unitario  deve ser 0.3 para camisa e corte e costura
+    print '--' + str(custo_por_hora(departamento))
+    print tempo_producao.tempo_unitario
+    return custo_por_hora(departamento) * float(tempo_producao.tempo_unitario)
+
+
+# Deve ser 3.75 pra camiseta OK!
+# Custo indireto unitario total + custo direto unitario total = Custo total
+def custo_direto_unitario_total(produto, mes):
+    custo_dir_produto = CustoDiretoProduto.objects.filter(produto=produto, mes=mes)
+    custo_dir_total = 0
+    for custo_dir in custo_dir_produto:
+        custo_dir_total += custo_dir.valor_unitario
+    return custo_dir_total
+
+
+def vendas_mes(num_mes, ano, nome_produto):
+    mes = Mes.objects.get(numero=num_mes, ano=ano)
+    produto = Produto.objects.get(nome=nome_produto)
+    produto_mes = ProdutoMes.objects.get(mes=mes, produto=produto)
+    produto_mes.quantidade_vendas = produto_mes.producao_mensal
+    return produto_mes.preco_venda_unitario * produto_mes.quantidade_vendas
+
+
+def custo_por_hora(departamento):
+    todas_variaveis = faz_rateio_e_muito_mais()
+    custo_hora = todas_variaveis[9]
+    CORTE_INDEX = 3
+    ACABAMENTO_INDEX = 4
+    if departamento.nome == 'Corte e Costura':
+        return custo_hora[CORTE_INDEX]
+    else:
+        return custo_hora[ACABAMENTO_INDEX]
+
+# RELATORIO =================================
+
 
 def relatorio(request):
     context = RequestContext(request)
     context_dict = {}
+    
+    todas_variaveis = faz_rateio_e_muito_mais()
+
+    context_dict['custeio'] = todas_variaveis[0]
+    context_dict['subtotal1'] = todas_variaveis[1]
+    context_dict['rateio_compras'] = todas_variaveis[2]
+    context_dict['subtotal2'] = todas_variaveis[3]
+    context_dict['rateio_almox'] = todas_variaveis[4]
+    context_dict['subtotal3'] = todas_variaveis[5]
+    context_dict['rateio_adm'] = todas_variaveis[6]
+    context_dict['total_depts_prod'] = todas_variaveis[7]
+    context_dict['horas_prod'] = todas_variaveis[8]
+    context_dict['custo_hora'] = todas_variaveis[9]
+    return render_to_response('absorcao/relatorio.html', context_dict, context)
+
+
+def faz_rateio_e_muito_mais():
     COMPRAS_INDEX = 0
     ALMOX_INDEX = 1
     ADM_INDEX = 2
@@ -306,7 +423,7 @@ def relatorio(request):
     subtotal1 = [0, 0, 0, 0, 0, 0]
 
     # Custo indireto
-    context_dict['custeio'] = []
+    custeio = []
     for idx, custo in enumerate(ci):
         compra = float(custo.porc_compras) * 0.01 * float(custo.valor_mensal)
         subtotal1[COMPRAS_INDEX] += compra
@@ -318,7 +435,7 @@ def relatorio(request):
         subtotal1[CORTE_INDEX] += corte
         acabamento = float(custo.porc_acabamento) * 0.01 * float(custo.valor_mensal)
         subtotal1[ACABAMENTO_INDEX] += acabamento
-        context_dict['custeio'].append((custo.nome, compra, almoxarifado, adm_prod, corte, acabamento, custo.valor_mensal))
+        custeio.append((custo.nome, compra, almoxarifado, adm_prod, corte, acabamento, custo.valor_mensal))
     subtotal1[TOTAIS_INDEX] = sum(subtotal1)
 
     # Calculo do rateio para o depto de compras
@@ -382,16 +499,7 @@ def relatorio(request):
     custo_hora[CORTE_INDEX] = float(total_depts_prod[CORTE_INDEX]) / float(horas_prod[CORTE_INDEX])
     custo_hora[ACABAMENTO_INDEX] = float(total_depts_prod[ACABAMENTO_INDEX]) / float(horas_prod[ACABAMENTO_INDEX])
 
-    context_dict['subtotal1'] = subtotal1
-    context_dict['rateio_compras'] = rateio_compras
-    context_dict['subtotal2'] = subtotal2
-    context_dict['rateio_almox'] = rateio_almox
-    context_dict['subtotal3'] = subtotal3
-    context_dict['rateio_adm'] = rateio_adm
-    context_dict['total_depts_prod'] = total_depts_prod
-    context_dict['horas_prod'] = horas_prod
-    context_dict['custo_hora'] = custo_hora
-    return render_to_response('absorcao/relatorio.html', context_dict, context)
+    return [custeio, subtotal1, rateio_compras, subtotal2, rateio_almox, subtotal3, rateio_adm, total_depts_prod, horas_prod, custo_hora]
 
 
 def tempo_total_depto(nome_departamento, num_mes):
