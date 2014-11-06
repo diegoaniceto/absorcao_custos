@@ -1,0 +1,13 @@
+{% extends 'absorcao/base.html' %}
+
+{% load static %}
+
+{% block body_block %}
+
+    {% if status %}
+        <h1>As alterações foram salvas com sucesso</h1>
+    {% else %}
+        <h1>Erro ao salvar as alterações. Tente novamente</h1>
+    {% endif %}
+    
+{% endblock %}

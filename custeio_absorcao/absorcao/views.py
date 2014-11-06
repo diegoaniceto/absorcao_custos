@@ -204,11 +204,58 @@ def produto_view(request, id_produto=None):
 def custo_direto_index(request):
     context = RequestContext(request)
     context_dict = {}
+    custos_totais = [0]*9
+    
+    custos = CustoDiretoProduto.objects.all().order_by('produto__nome').order_by('custo_direto__nome')
+    
+    for custo in custos:
+        if custo.custo_direto.nome == 'Aviamentos':
+            if custo.produto.nome == 'Camisetas':
+                custos_totais[0] += custo.valor_unitario
+            if custo.produto.nome == 'Vestidos':
+                custos_totais[1] += custo.valor_unitario
+            if custo.produto.nome == 'Calcas':
+                custos_totais[2] += custo.valor_unitario
+
+        elif custo.custo_direto.nome == 'Mao-de-obra Direta':
+            if custo.produto.nome == 'Camisetas':
+                custos_totais[3] += custo.valor_unitario
+            if custo.produto.nome == 'Vestidos':
+                custos_totais[4] += custo.valor_unitario
+            if custo.produto.nome == 'Calcas':
+                custos_totais[5] += custo.valor_unitario
+
+        elif custo.custo_direto.nome == 'Tecido':
+            if custo.produto.nome == 'Camisetas':
+                custos_totais[6] += custo.valor_unitario
+            if custo.produto.nome == 'Vestidos':
+                custos_totais[7] += custo.valor_unitario
+            if custo.produto.nome == 'Calcas':
+                custos_totais[8] += custo.valor_unitario
+    
+    produtos = Produto.objects.all().order_by('nome')
+ 
+    context_dict['index'] = 1
+    context_dict['mes'] = None
+    context_dict['produtos'] = produtos
+    context_dict['custos_diretos_produtos'] = custos_totais
+    
+    return render_to_response('absorcao/custo_direto.html', context_dict, context)
+
+def custo_direto_mes(request, mes):
+    context = RequestContext(request)
+    context_dict = {}
     
     custos_diretos = CustoDireto.objects.all().order_by('nome')
-    produtos = Produto.objects.all().order_by('nome')
-    custos_diretos_produtos = CustoDiretoProduto.objects.all().order_by('produto__nome').order_by('custo_direto__nome')
+    context_dict['qtd_custos_diretos'] = len(custos_diretos)
+
+    nome_mes = Mes.objects.get(abreviacao=mes)
     
+    produtos = Produto.objects.all().order_by('nome')
+    custos_diretos_produtos = CustoDiretoProduto.objects.all().order_by('produto__nome').order_by('custo_direto__nome').filter(mes__abreviacao=mes)
+    
+    context_dict['index'] = 0
+    context_dict['mes'] = nome_mes
     context_dict['custos_diretos'] = custos_diretos
     context_dict['produtos'] = produtos
     context_dict['custos_diretos_produtos'] = custos_diretos_produtos
@@ -218,7 +265,38 @@ def custo_direto_index(request):
 def custo_direto_edit(request, mes=None):
     context = RequestContext(request)
     context_dict = {}
+    
+    custos_diretos = CustoDireto.objects.all().order_by('nome')
+    context_dict['qtd_custos_diretos'] = len(custos_diretos)
+
+    nome_mes = Mes.objects.get(abreviacao=mes)
+    
+    produtos = Produto.objects.all().order_by('nome')
+    custos_diretos_produtos = CustoDiretoProduto.objects.all().order_by('produto__nome').order_by('custo_direto__nome').filter(mes__abreviacao=mes)
+    
+    context_dict['index'] = 0
+    context_dict['mes'] = nome_mes
+    context_dict['custos_diretos'] = custos_diretos
+    context_dict['produtos'] = produtos
+    context_dict['custos_diretos_produtos'] = custos_diretos_produtos
+    
     return render_to_response('absorcao/custo_direto-edit.html', context_dict, context)
+
+def custo_direto_save(request, mes=None):
+    context = RequestContext(request)
+    context_dict = {}
+
+    custo_dp = CustoDiretoProduto.objects.all().order_by('produto__nome').order_by('custo_direto__nome').filter(mes__abreviacao=mes)
+
+    i = 0
+    for custo in custo_dp:
+        custo.valor_unitario = request.POST['custos_diretos-'+str(i)]
+        i += 1
+        custo.save()
+
+    context_dict['status'] = True
+    
+    return render_to_response('absorcao/any-save.html', context_dict, context)
 
 def user_login(request):
     context = RequestContext(request)
