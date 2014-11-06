@@ -119,9 +119,9 @@ def produto_edit(request, id_produto=None):
     context = RequestContext(request)
     context_dict = {}
     try:
-        custo_indireto = CustoIndireto.objects.get(id=id_produto)
+        produto = Produto.objects.get(id=id_produto)
 
-        context_dict['custo_indireto'] = custo_indireto
+        context_dict['produto'] = produto
 
     except Produto.DoesNotExist:
         # We get here if we didn't find the specified experiment.

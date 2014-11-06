@@ -10,7 +10,7 @@
 
     <div class="col-md-6"> 
 
-		<form id="despesa_form" method="post" action="/despesa/edit/{{ despesa.id }}/">
+		<form id="produto_form" method="post" action="/produto/edit/{{ produto.id }}/">
 
 			{% csrf_token %}
 		    {% for hidden in form.hidden_fields %}
