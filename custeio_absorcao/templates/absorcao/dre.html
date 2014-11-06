@@ -8,7 +8,7 @@
 
     <h1>Demonstração de Resultados do Exercício</h1>
     <div class="table-responsive">
-	  <table class="table table-hover sortable">
+	  <table class="table table-hover sortable table-condensed">
     	<thead>
     		<th></th>
     		<th>Camisetas</th>
@@ -39,7 +39,11 @@
 		    </tr>
 		    <!-- Diretos -->
 		    {% for custo_direto in cd %}
-				<tr>
+		    	{% if forloop.counter == 3 %}
+					<tr class="underline">
+				{% else %}
+					<tr>
+				{% endif %}
 			    	{% for coluna in custo_direto %}
 			    		{% if forloop.counter == 1%}
 			    	 		<td>{{coluna}}</td>
@@ -60,12 +64,16 @@
 	    	</tr>
 	    	<!-- Diretos -->
 		    {% for custo_indireto in cip %}
-				<tr>
+		    	{% if forloop.counter == 2 %}
+					<tr class="underline">
+				{% else %}
+					<tr>
+				{% endif %}
 			    	{% for coluna in custo_indireto %}
 			    		{% if forloop.counter == 1%}
 			    	 		<td>{{coluna}}</td>
 			    	 	{% else %}
-			    			<td>R$ {{coluna|floatformat:2|intcomma}}</td>
+			    			<td class="value">R$ {{coluna|floatformat:2|intcomma}}</td>
 			    		{% endif %}
 			    	{% endfor %}
 		    	</tr>
@@ -109,7 +117,7 @@
 		    	 	{% elif forloop.counter != 5 %}
 		    			<td>{{coluna}}</td>
 		    		{% else %}
-		    			<td>R$ {{coluna|floatformat:2|intcomma}}</td>
+		    			<td class="underline">R$ {{coluna|floatformat:2|intcomma}}</td>
 		    		{% endif %}
 		    	{% endfor %}
 	    	</tr>

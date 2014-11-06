@@ -10,3 +10,7 @@ body {
 .em {
 	font-style: italic;
 }
+
+.underline {
+	text-decoration: underline;
+}
