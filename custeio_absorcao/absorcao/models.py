@@ -38,7 +38,7 @@ class ProdutoMes(models.Model):
     mes = models.ForeignKey(Mes)
     producao_mensal = models.IntegerField()
     preco_venda_unitario = models.DecimalField(decimal_places=2, max_digits=10)
-    # quantidade_vendas = models.IntegerField()
+    vendas_mensal = models.IntegerField()
 
     def __unicode__(self):
         return str(self.produto) + ' - ' + str(self.mes)

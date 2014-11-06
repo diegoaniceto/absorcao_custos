@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from django.template import RequestContext
 from django.shortcuts import render_to_response
 from forms import DespesaForm, CustoIndiretoForm
@@ -214,7 +215,7 @@ def custo_direto_index(request):
                 custos_totais[0] += custo.valor_unitario
             if custo.produto.nome == 'Vestidos':
                 custos_totais[1] += custo.valor_unitario
-            if custo.produto.nome == 'Calcas':
+            if custo.produto.nome == 'Calças':
                 custos_totais[2] += custo.valor_unitario
 
         elif custo.custo_direto.nome == 'Mao-de-obra Direta':
@@ -222,7 +223,7 @@ def custo_direto_index(request):
                 custos_totais[3] += custo.valor_unitario
             if custo.produto.nome == 'Vestidos':
                 custos_totais[4] += custo.valor_unitario
-            if custo.produto.nome == 'Calcas':
+            if custo.produto.nome == 'Calças':
                 custos_totais[5] += custo.valor_unitario
 
         elif custo.custo_direto.nome == 'Tecido':
@@ -230,7 +231,7 @@ def custo_direto_index(request):
                 custos_totais[6] += custo.valor_unitario
             if custo.produto.nome == 'Vestidos':
                 custos_totais[7] += custo.valor_unitario
-            if custo.produto.nome == 'Calcas':
+            if custo.produto.nome == 'Calças':
                 custos_totais[8] += custo.valor_unitario
     
     produtos = Produto.objects.all().order_by('nome')
@@ -386,7 +387,7 @@ def dre(request):
     vendas = [0, 0, 0, 0, 0]
     vendas[CAMISETAS_INDEX] = vendas_mes(03, 2014, 'Camisetas')
     vendas[VESTIDOS_INDEX] = vendas_mes(03, 2014, 'Vestidos')
-    vendas[CALCAS_INDEX] = vendas_mes(03, 2014, 'Calcas')
+    vendas[CALCAS_INDEX] = vendas_mes(03, 2014, 'Calças')
     vendas[TOTAL_INDEX] = sum(vendas)
     vendas[NOME_INDEX] = 'Vendas'
 
@@ -394,7 +395,7 @@ def dre(request):
     cpv = [0, 0, 0, 0, 0]
     cpv[CAMISETAS_INDEX] = custo_produto_vendido(03, 2014, 'Camisetas')
     cpv[VESTIDOS_INDEX] = custo_produto_vendido(03, 2014, 'Vestidos')
-    cpv[CALCAS_INDEX] = custo_produto_vendido(03, 2014, 'Calcas')
+    cpv[CALCAS_INDEX] = custo_produto_vendido(03, 2014, 'Calças')
     cpv[TOTAL_INDEX] = sum(cpv)
     cpv[NOME_INDEX] = 'Custos dos Produtos Vendidos'
 
@@ -432,7 +433,7 @@ def custo_indireto_detalhado(mes):
     camisetas_mes = ProdutoMes.objects.get(produto=camisetas, mes=mes)
     vestidos = Produto.objects.get(nome='Vestidos')
     vestidos_mes = ProdutoMes.objects.get(produto=vestidos, mes=mes)
-    calcas = Produto.objects.get(nome='Calcas')
+    calcas = Produto.objects.get(nome='Calças')
     calcas_mes = ProdutoMes.objects.get(produto=calcas, mes=mes)
     linhas = []
     for depto in (corte, acabamento):
@@ -450,9 +451,8 @@ def custo_produto_vendido(num_mes, ano, nome_produto):
     mes = Mes.objects.get(ano=ano, numero=num_mes)
     produto = Produto.objects.get(nome=nome_produto)
     produto_mes = ProdutoMes.objects.get(produto=produto, mes=mes)
-    produto_mes.quantidade_vendas = produto_mes.producao_mensal  # FIX ME
     print custo_total_unitario(mes, produto)
-    return custo_total_unitario(mes, produto) * produto_mes.quantidade_vendas
+    return custo_total_unitario(mes, produto) * produto_mes.vendas_mes
 
 
 # custo total * quantidade vendida = CPV
@@ -496,7 +496,7 @@ def custo_direto_detalhado(mes):
     camisetas_mes = ProdutoMes.objects.get(produto=camisetas, mes=mes)
     vestidos = Produto.objects.get(nome='Vestidos')
     vestidos_mes = ProdutoMes.objects.get(produto=vestidos, mes=mes)
-    calcas = Produto.objects.get(nome='Calcas')
+    calcas = Produto.objects.get(nome='Calças')
     calcas_mes = ProdutoMes.objects.get(produto=calcas, mes=mes)
     custos_diretos = CustoDireto.objects.all()
     linhas = []
@@ -515,8 +515,7 @@ def vendas_mes(num_mes, ano, nome_produto):
     mes = Mes.objects.get(numero=num_mes, ano=ano)
     produto = Produto.objects.get(nome=nome_produto)
     produto_mes = ProdutoMes.objects.get(mes=mes, produto=produto)
-    produto_mes.quantidade_vendas = produto_mes.producao_mensal  # FIX ME
-    return produto_mes.preco_venda_unitario * produto_mes.quantidade_vendas
+    return produto_mes.preco_venda_unitario * produto_mes.vendas_mes
 
 
 def custo_por_hora(departamento):
@@ -647,7 +646,7 @@ def tempo_total_depto(nome_departamento, num_mes):
     tempo_depto = 0
     tempo_depto += tempo_total_produto(departamento, 'Camisetas', num_mes, 2014)
     tempo_depto += tempo_total_produto(departamento, 'Vestidos', num_mes, 2014)
-    tempo_depto += tempo_total_produto(departamento, 'Calcas', num_mes, 2014)
+    tempo_depto += tempo_total_produto(departamento, 'Calças', num_mes, 2014)
     return tempo_depto
 
 

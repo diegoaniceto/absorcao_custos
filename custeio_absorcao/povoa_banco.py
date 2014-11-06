@@ -6,9 +6,9 @@ import os
 def populate():
     dep_corte = add_departamento('Corte e Costura', True)
     dep_acabamento = add_departamento('Acabamento', True)
-    dep_compras = add_departamento('Compras', False)
-    dep_almox = add_departamento('Almoxarifado', False)
-    dep_adm = add_departamento('Adm. Produção', False)
+    add_departamento('Compras', False)
+    add_departamento('Almoxarifado', False)
+    add_departamento('Adm. Produção', False)
 
     prod_camisetas = add_produto('Camisetas')
     prod_vestidos = add_produto('Vestidos')
@@ -27,9 +27,9 @@ def populate():
     nov = add_mes('Nov', 11, 2014)
     dez = add_mes('Dez', 12, 2014)
 
-    add_prod_mes(prod_camisetas, mar, 18000, 10)
-    add_prod_mes(prod_vestidos, mar, 4200, 22)
-    add_prod_mes(prod_calcas, mar, 13000, 16)
+    add_prod_mes(prod_camisetas, mar, 18000, 18000, 10)
+    add_prod_mes(prod_vestidos, mar, 4200, 4200, 22)
+    add_prod_mes(prod_calcas, mar, 13000, 13000, 16)
 
     add_tempo_producao(prod_camisetas, dep_corte, 0.3)
     add_tempo_producao(prod_vestidos, dep_corte, 0.7)
@@ -220,8 +220,8 @@ def add_mes(abreviacao, numero, ano):
     return m
 
 
-def add_prod_mes(produto, mes, pm, pv):
-    pm = ProdutoMes.objects.get_or_create(produto=produto, mes=mes, producao_mensal=pm, preco_venda_unitario=pv)
+def add_prod_mes(produto, mes, pm, vm, pv):
+    pm = ProdutoMes.objects.get_or_create(produto=produto, mes=mes, producao_mensal=pm, vendas_mensal=vm, preco_venda_unitario=pv)
     return pm
 
 # Start execution here!
