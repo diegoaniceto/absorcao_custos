@@ -1,0 +1,29 @@
+{% extends 'absorcao/base.html' %}
+
+{% load static %}
+
+{% block title %}Editar Produto no Mês{% endblock %}
+
+{% block body_block %}
+
+    <h1>Editando Produto</h1>
+
+    <div class="col-md-6"> 
+
+		<form id="produto_mes_form" method="post" action="/produto-mes/edit/{{ produto_mes.id }}/">
+
+			{% csrf_token %}
+		    {% for hidden in form.hidden_fields %}
+		        {{ hidden }}
+		    {% endfor %}    
+
+		    {% load bootstrap3 %}
+		    {% bootstrap_form form %}
+
+			<input type="submit" name="submit" value="Salvar" class="btn btn-primary pull-right"/>
+
+		    <a href="/produto" class="btn btn-small btn-default pull-right">Cancelar</a>
+		</form>
+    </div>
+
+{% endblock %}

@@ -6,11 +6,15 @@
 
 {% block body_block %}
 
-    <h1>Produto: {{ produto.nome }}</h1>
+{% load humanize %}
 
-    <div class="col-md-6"> 
+    <div class="col-md-6">
+
+    		<h1>Produto: {{ produto.nome }}</h1>
 
 			<strong>Nome:</strong> {{ produto.nome }}
+			<br>
+			<br>
 
 			<div class="table-responsive">
 			  <table class="table table-hover table-bordered table-striped sortable">
@@ -21,12 +25,12 @@
 		    		<th>Ações</th>
 		    	</thead>
 			    <tbody>
-				    {% for produto in produto_meses %}
+				    {% for produto_mes in produto_meses %}
 			    	<tr>
-				    <td>{{ produto.mes }}/{{produto.mes.ano}}</td>
-				    <td>{{ produto.producao_mensal }}</td>
-				    <td>R$ {{ produto.preco_venda_unitario }}</td>
-				    <td><a href="/produto/edit/{{ produto.id }}"><span class="glyphicon glyphicon-pencil"></span></a></td>
+				    <td>{{ produto_mes.mes }}/{{produto_mes.mes.ano}}</td>
+				    <td>{{ produto_mes.producao_mensal|intcomma }}</td>
+				    <td>R$ {{ produto_mes.preco_venda_unitario }}</td>
+				    <td><a href="/produto-mes/edit/{{ produto_mes.id }}"><span class="glyphicon glyphicon-pencil"></span></a></td>
 			    	</tr>
 				    {% endfor %}
 			    </tbody>

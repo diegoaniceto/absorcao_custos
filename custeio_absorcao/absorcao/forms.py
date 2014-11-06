@@ -1,16 +1,25 @@
 from absorcao.models import Produto, TempoProducao, Departamento
 from django.contrib.auth.models import User
 from django import forms
-from absorcao.models import Produto, Despesa, CustoIndireto
+from absorcao.models import Despesa, CustoIndireto
+from absorcao.models import ProdutoMes
 
 
 class ProdutoForm(forms.ModelForm):
     nome = forms.CharField(max_length=128)
-    # producao_mensal = forms.IntegerField()
-    # preco_venda_unitario = forms.DecimalField(decimal_places=2)
 
     class Meta:
         model = Produto
+
+
+class ProdutoMesForm(forms.ModelForm):
+    produto = forms.ModelChoiceField(queryset=Produto.objects.all())
+    producao_mensal = forms.IntegerField()
+    preco_venda_unitario = forms.DecimalField(decimal_places=2)
+
+    class Meta:
+        model = ProdutoMes
+
 
 class DespesaForm(forms.ModelForm):
     nome = forms.CharField(max_length=128)
@@ -19,12 +28,14 @@ class DespesaForm(forms.ModelForm):
     class Meta:
         model = Despesa
 
+
 class CustoIndiretoForm(forms.ModelForm):
     nome = forms.CharField(max_length=128)
     valor_mensal = forms.DecimalField(decimal_places=2)
 
     class Meta:
         model = CustoIndireto
+
 
 class TempoProducaoForm(forms.ModelForm):
     produto = forms.ModelChoiceField(queryset=Produto.objects.all())

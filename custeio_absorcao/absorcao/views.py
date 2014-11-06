@@ -10,6 +10,7 @@ from models import TempoProducao, CustoIndireto, Despesa
 from models import Departamento
 from models import Mes
 from forms import ProdutoForm, TempoProducaoForm
+from forms import ProdutoMesForm
 
 
 @login_required
@@ -161,37 +162,37 @@ def produto_index(request):
 
 
 @login_required
-def produto_edit(request, id_produto=None):
+def produto_mes_edit(request, id_produto_mes=None):
     context = RequestContext(request)
     context_dict = {}
     try:
-        produto = Produto.objects.get(id=id_produto)
+        produto_mes = ProdutoMes.objects.get(id=id_produto_mes)
 
-        context_dict['produto'] = produto
+        context_dict['produto_mes'] = produto_mes
 
     except Produto.DoesNotExist:
         # We get here if we didn't find the specified experiment.
-        return render_to_response('absorcao/produto-edit.html',
+        return render_to_response('absorcao/produto-mes-edit.html',
                                   context_dict, context)
 
     if request.POST:
-        form = ProdutoForm(request.POST, instance=produto)
+        form = ProdutoMesForm(request.POST, instance=produto_mes)
         if form.is_valid():
 
             form.save()
 
             # If the save was successful, redirect to the details page
-            return HttpResponseRedirect('/produto/')
+            return HttpResponseRedirect('/produto/' + str(produto_mes.produto.id))
 
         else:
             print form.errors
 
     else:
-        form = ProdutoForm(instance=produto)
+        form = ProdutoMesForm(instance=produto_mes)
 
     context_dict['form'] = form
 
-    return render_to_response('absorcao/produto-edit.html', context_dict,
+    return render_to_response('absorcao/produto-mes-edit.html', context_dict,
                               context)
 
 
