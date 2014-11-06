@@ -398,10 +398,52 @@ def dre(request):
     cpv[TOTAL_INDEX] = sum(cpv)
     cpv[NOME_INDEX] = 'Custos dos Produtos Vendidos'
 
+    # Subtotal diretos
+    cds_tabela = custo_direto_detalhado(Mes.objects.get(ano=2014, numero=3))
+    subtotal_diretos = [0, 0, 0, 0, 0]
+    subtotal_diretos[1] = cds_tabela[0][1] + cds_tabela[1][1] + cds_tabela[2][1]
+    subtotal_diretos[2] = cds_tabela[0][2] + cds_tabela[1][2] + cds_tabela[2][2]
+    subtotal_diretos[3] = cds_tabela[0][3] + cds_tabela[1][3] + cds_tabela[2][3]
+    subtotal_diretos[4] = cds_tabela[0][4] + cds_tabela[1][4] + cds_tabela[2][4]
+    subtotal_diretos[0] = 'Subtotal diretos'
+
+    cip_tabela = custo_indireto_detalhado(Mes.objects.get(ano=2014, numero=3))
+    subtotal_cip = [0, 0, 0, 0, 0]
+    subtotal_cip[1] = cip_tabela[0][1] + cip_tabela[1][1]
+    subtotal_cip[2] = cip_tabela[0][2] + cip_tabela[1][2]
+    subtotal_cip[3] = cip_tabela[0][3] + cip_tabela[1][3]
+    subtotal_cip[4] = cip_tabela[0][4] + cip_tabela[1][4]
+    subtotal_cip[0] = 'Subtotal CIP'
+
     context_dict['vendas'] = vendas
     context_dict['cpv'] = cpv
+    context_dict['cd'] = cds_tabela
+    context_dict['subtotal_diretos'] = subtotal_diretos
+    context_dict['cip'] = cip_tabela
+    context_dict['subtotal_cip'] = subtotal_cip
 
     return render_to_response('absorcao/dre.html', context_dict, context)
+
+
+def custo_indireto_detalhado(mes):
+    corte = Departamento.objects.get(nome='Corte e Costura')
+    acabamento = Departamento.objects.get(nome='Acabamento')
+    camisetas = Produto.objects.get(nome='Camisetas')
+    camisetas_mes = ProdutoMes.objects.get(produto=camisetas, mes=mes)
+    vestidos = Produto.objects.get(nome='Vestidos')
+    vestidos_mes = ProdutoMes.objects.get(produto=vestidos, mes=mes)
+    calcas = Produto.objects.get(nome='Calcas')
+    calcas_mes = ProdutoMes.objects.get(produto=calcas, mes=mes)
+    linhas = []
+    for depto in (corte, acabamento):
+        colunas = [0,0,0,0,0]
+        colunas[1] = custo_indireto_unitario_por_depto(camisetas, depto) * camisetas_mes.producao_mensal
+        colunas[2] = custo_indireto_unitario_por_depto(vestidos, depto) * vestidos_mes.producao_mensal
+        colunas[3] = custo_indireto_unitario_por_depto(calcas, depto) * calcas_mes.producao_mensal
+        colunas[4] = sum(colunas)
+        colunas[0] = depto.nome
+        linhas.append(colunas)
+    return linhas
 
 
 def custo_produto_vendido(num_mes, ano, nome_produto):
@@ -449,11 +491,31 @@ def custo_direto_unitario_total(produto, mes):
     return custo_dir_total
 
 
+def custo_direto_detalhado(mes):
+    camisetas = Produto.objects.get(nome='Camisetas')
+    camisetas_mes = ProdutoMes.objects.get(produto=camisetas, mes=mes)
+    vestidos = Produto.objects.get(nome='Vestidos')
+    vestidos_mes = ProdutoMes.objects.get(produto=vestidos, mes=mes)
+    calcas = Produto.objects.get(nome='Calcas')
+    calcas_mes = ProdutoMes.objects.get(produto=calcas, mes=mes)
+    custos_diretos = CustoDireto.objects.all()
+    linhas = []
+    for custo_dir in custos_diretos:
+        colunas = [0,0,0,0,0]
+        colunas[1] = CustoDiretoProduto.objects.get(custo_direto=custo_dir, produto=camisetas, mes=mes).valor_unitario * camisetas_mes.producao_mensal
+        colunas[2] = CustoDiretoProduto.objects.get(custo_direto=custo_dir, produto=vestidos, mes=mes).valor_unitario * vestidos_mes.producao_mensal
+        colunas[3] = CustoDiretoProduto.objects.get(custo_direto=custo_dir, produto=calcas, mes=mes).valor_unitario * calcas_mes.producao_mensal
+        colunas[4] = sum(colunas)
+        colunas[0] = custo_dir.nome
+        linhas.append(colunas)
+    return linhas
+
+
 def vendas_mes(num_mes, ano, nome_produto):
     mes = Mes.objects.get(numero=num_mes, ano=ano)
     produto = Produto.objects.get(nome=nome_produto)
     produto_mes = ProdutoMes.objects.get(mes=mes, produto=produto)
-    produto_mes.quantidade_vendas = produto_mes.producao_mensal
+    produto_mes.quantidade_vendas = produto_mes.producao_mensal  # FIX ME
     return produto_mes.preco_venda_unitario * produto_mes.quantidade_vendas
 
 
