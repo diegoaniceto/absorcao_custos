@@ -1,0 +1,86 @@
+{% extends 'absorcao/base.html' %}
+
+{% load static %}
+
+{% load humanize %}
+
+{% block body_block %}
+
+    <h1>Demonstração de Resultados do Exercício</h1>
+    <div class="table-responsive">
+	  <table class="table table-hover sortable">
+    	<thead>
+    		<th></th>
+    		<th>Camisetas</th>
+    		<th>Vestidos</th>
+    		<th>Calças</th>
+    		<th>Total</th>
+    	</thead>
+	    <tbody>
+	    	<!-- Vendas -->
+	    	<tr class="bold">
+		    	{% for v in vendas %}
+		    	 	{% if forloop.counter == 1%}
+		    	 		<td>{{v}}</td>
+		    	 	{% else %}
+		    			<td>R$ {{v|floatformat:2|intcomma}}</td>
+		    		{% endif %}
+		    	{% endfor %}
+	    	</tr>
+		    <!-- CPV -->
+		    <tr class="bold">
+		    	{% for c in cpv %}
+		    		{% if forloop.counter == 1%}
+		    	 		<td>{{c}}</td>
+		    	 	{% else %}
+		    			<td>R$ {{c|floatformat:2|intcomma}}</td>
+		    		{% endif %}
+		    	{% endfor %}
+		    </tr>
+		    <!-- Diretos -->
+		    {% for custo_direto in cd %}
+				<tr>
+			    	{% for coluna in custo_direto %}
+			    		{% if forloop.counter == 1%}
+			    	 		<td>{{coluna}}</td>
+			    	 	{% else %}
+			    			<td>R$ {{coluna|floatformat:2|intcomma}}</td>
+			    		{% endif %}
+			    	{% endfor %}
+		    	</tr>
+		    {% endfor %}
+		    <tr class="em">
+		    	{% for coluna in subtotal_diretos %}
+		    		{% if forloop.counter == 1%}
+		    	 		<td>{{coluna}}</td>
+		    	 	{% else %}
+		    			<td>R$ {{coluna|floatformat:2|intcomma}}</td>
+		    		{% endif %}
+		    	{% endfor %}
+	    	</tr>
+	    	<!-- Diretos -->
+		    {% for custo_indireto in cip %}
+				<tr>
+			    	{% for coluna in custo_indireto %}
+			    		{% if forloop.counter == 1%}
+			    	 		<td>{{coluna}}</td>
+			    	 	{% else %}
+			    			<td>R$ {{coluna|floatformat:2|intcomma}}</td>
+			    		{% endif %}
+			    	{% endfor %}
+		    	</tr>
+		    {% endfor %}
+		    <tr class="em">
+		    	{% for coluna in subtotal_cip %}
+		    		{% if forloop.counter == 1%}
+		    	 		<td>{{coluna}}</td>
+		    	 	{% else %}
+		    			<td>R$ {{coluna|floatformat:2|intcomma}}</td>
+		    		{% endif %}
+		    	{% endfor %}
+	    	</tr>
+	    </tbody>
+	  </table>
+	</div>
+
+{% endblock %}
