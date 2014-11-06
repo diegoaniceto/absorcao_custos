@@ -4,7 +4,12 @@
 
 {% block body_block %}
 
-    <h1>Custos diretos</h1>
+    {% if mes %}
+        <h1>Custos diretos de {{mes}}</h1>
+    {% else %}
+        <h1>Custos diretos</h1>
+    {% endif %}
+    
     <div class="table-responsive">
 	  <table class="table table-hover table-striped">
     	<thead>
@@ -14,25 +19,33 @@
                 {% endfor %}
     	</thead>
 	    <tbody>
-	    	    <tr>
-                            <td>Tecidos</td>
-                            <td>0.25</td>
-                            <td>0.75</td>
-                            <td>0.5</td>
-                    </tr>
+		    {% for custo in custos_diretos_produtos %}
+                        {% if forloop.counter0 == 0 or forloop.counter0 == 3 or forloop.counter0 == 6 %}
+	    	            <tr>
+                        {% endif %}
+                        {% if forloop.counter0 == 0 %}
                             <td>Aviamentos</td>
-                            <td>0.5</td>
-                            <td>1</td>
-                            <td>1.75</td>
-                    </tr>
-                            <td>Mao-de-obra Direta</td>
-                            <td>0.25</td>
-                            <td>0.75</td>
-                            <td>0.5</td>
-	    	    </tr>
+                        {% elif forloop.counter0 == 3 %}
+                            <td>Mão de obra direta</td>
+                        {% elif forloop.counter0 == 6 %}
+                            <td>Tecidos</td>
+                        {% endif %}
+                {% if index == 1 %}
+                    <td>{{ custo }}</td>
+                {% else %}
+		            <td>{{ custo.valor_unitario }}</td>
+                {% endif %}
+                        {% if forloop.counter0 == 2 or forloop.counter0 == 5 or forloop.counter0 == 8 %}
+	    	            </tr>
+                        {% endif %}
+		    {% endfor %}
 	    </tbody>
 	  </table>
-          <input type="button" value="Editar">
+      {% if mes %}
+      <form action="edit/">
+        <input type='submit' value='Editar'>
+      </form>
+      {% endif %}
 	</div>
 
 {% endblock %}
