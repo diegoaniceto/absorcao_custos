@@ -13,7 +13,7 @@ class ProdutoForm(forms.ModelForm):
 
 
 class ProdutoMesForm(forms.ModelForm):
-    produto = forms.ModelChoiceField(queryset=Produto.objects.all())
+    produto = forms.ModelChoiceField(queryset=Produto.objects.all(), empty_label=None)
     producao_mensal = forms.IntegerField()
     preco_venda_unitario = forms.DecimalField(decimal_places=2)
 
@@ -38,8 +38,8 @@ class CustoIndiretoForm(forms.ModelForm):
 
 
 class TempoProducaoForm(forms.ModelForm):
-    produto = forms.ModelChoiceField(queryset=Produto.objects.all())
-    departamento = forms.ModelChoiceField(queryset=Departamento.objects.all())
+    produto = forms.ModelChoiceField(queryset=Produto.objects.all(), empty_label=None)
+    departamento = forms.ModelChoiceField(queryset=Departamento.objects.all(), empty_label=None)
     tempo_unitario = forms.DecimalField(decimal_places=2, max_digits=7, required=True)
 
     class Meta:
