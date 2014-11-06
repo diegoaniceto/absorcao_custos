@@ -21,6 +21,7 @@ class Mes(models.Model):
     abreviacao = models.CharField(max_length=5)
     ano = models.IntegerField()
     numero = models.IntegerField()
+    nome = models.CharField(max_length=12)
 
     def __unicode__(self):
         return self.abreviacao

@@ -267,7 +267,7 @@ def custo_direto_mes(request, mes):
     custos_diretos = CustoDireto.objects.all().order_by('nome')
     context_dict['qtd_custos_diretos'] = len(custos_diretos)
 
-    nome_mes = Mes.objects.get(abreviacao=mes)
+    nome_mes = Mes.objects.get(abreviacao=mes).nome
     
     produtos = Produto.objects.all().order_by('nome')
     custos_diretos_produtos = CustoDiretoProduto.objects.all().order_by('produto__nome').order_by('custo_direto__nome').filter(mes__abreviacao=mes)
@@ -289,7 +289,7 @@ def custo_direto_edit(request, mes=None):
     custos_diretos = CustoDireto.objects.all().order_by('nome')
     context_dict['qtd_custos_diretos'] = len(custos_diretos)
 
-    nome_mes = Mes.objects.get(abreviacao=mes)
+    nome_mes = Mes.objects.get(abreviacao=mes).nome
     
     produtos = Produto.objects.all().order_by('nome')
     custos_diretos_produtos = CustoDiretoProduto.objects.all().order_by('produto__nome').order_by('custo_direto__nome').filter(mes__abreviacao=mes)

@@ -14,18 +14,18 @@ def populate():
     prod_vestidos = add_produto('Vestidos')
     prod_calcas = add_produto('Calças')
 
-    jan = add_mes('Jan', 1, 2014)
-    fev = add_mes('Fev', 2, 2014)
-    mar = add_mes('Mar', 3, 2014)
-    abr = add_mes('Abr', 4, 2014)
-    mai = add_mes('Mai', 5, 2014)
-    jun = add_mes('Jun', 6, 2014)
-    jul = add_mes('Jul', 7, 2014)
-    ago = add_mes('Ago', 8, 2014)
-    setm = add_mes('Set', 9, 2014)
-    out = add_mes('Out', 10, 2014)
-    nov = add_mes('Nov', 11, 2014)
-    dez = add_mes('Dez', 12, 2014)
+    jan = add_mes('Jan', 1, 2014, 'Janeiro')
+    fev = add_mes('Fev', 2, 2014, 'Fevereiro')
+    mar = add_mes('Mar', 3, 2014, 'Março')
+    abr = add_mes('Abr', 4, 2014, 'Abril')
+    mai = add_mes('Mai', 5, 2014, 'Maio')
+    jun = add_mes('Jun', 6, 2014, 'Junho')
+    jul = add_mes('Jul', 7, 2014, 'Julho')
+    ago = add_mes('Ago', 8, 2014, 'Agosto')
+    setm = add_mes('Set', 9, 2014, 'Setembro')
+    out = add_mes('Out', 10, 2014, 'Outubro')
+    nov = add_mes('Nov', 11, 2014, 'Novembro')
+    dez = add_mes('Dez', 12, 2014, 'Dezembro')
 
     add_prod_mes(prod_camisetas, mar, 18000, 18000, 10)
     add_prod_mes(prod_vestidos, mar, 4200, 4200, 22)
@@ -215,8 +215,8 @@ def add_despesa(nome, valor_mensal):
     return d
 
 
-def add_mes(abreviacao, numero, ano):
-    m = Mes.objects.get_or_create(abreviacao=abreviacao, ano=ano, numero=numero)[0]
+def add_mes(abreviacao, numero, ano, nome):
+    m = Mes.objects.get_or_create(abreviacao=abreviacao, ano=ano, numero=numero, nome=nome)[0]
     return m
 
 
