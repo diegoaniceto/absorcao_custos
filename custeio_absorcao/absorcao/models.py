@@ -24,7 +24,7 @@ class Mes(models.Model):
     nome = models.CharField(max_length=12)
 
     def __unicode__(self):
-        return self.abreviacao
+        return self.abreviacao + '/' + str(self.ano)
 
 
 class PerfilUsuario(models.Model):
