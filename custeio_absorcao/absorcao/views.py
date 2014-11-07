@@ -616,7 +616,7 @@ def custo_por_hora(departamento):
 
 
 @login_required
-def relatorio(request):
+def rateio_cip(request):
     context = RequestContext(request)
     context_dict = {}
     
@@ -632,7 +632,7 @@ def relatorio(request):
     context_dict['total_depts_prod'] = todas_variaveis[7]
     context_dict['horas_prod'] = todas_variaveis[8]
     context_dict['custo_hora'] = todas_variaveis[9]
-    return render_to_response('absorcao/relatorio.html', context_dict, context)
+    return render_to_response('absorcao/rateio-cip.html', context_dict, context)
 
 
 def faz_rateio_e_muito_mais():
