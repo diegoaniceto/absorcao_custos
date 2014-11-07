@@ -1,6 +1,7 @@
 {% extends 'absorcao/base.html' %}
 
 {% load static %}
+{% load humanize %}
 
 {% block title %}Custos Indiretos{% endblock %}
 
@@ -11,12 +12,14 @@
       <table class="table table-hover table-striped">
         <thead>
             <th>Nome</th>
+            <th>Valor mensal</th>
             <th>Ações</th>
         </thead>
         <tbody>
             {% for custo_indireto in custos_indiretos %}
             <tr>
             <td>{{ custo_indireto.nome }}</td>
+            <td>R$ {{ custo_indireto.valor_mensal|floatformat:2|intcomma }}</td>
             <td><a href="/custo_indireto/edit/{{ custo_indireto.id }}"><span class="glyphicon glyphicon-pencil"></span></a></td>
             </tr>
             {% endfor %}
