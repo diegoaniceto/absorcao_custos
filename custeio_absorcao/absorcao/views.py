@@ -19,7 +19,36 @@ import sys
 @login_required
 def index(request):
     context = RequestContext(request)
-    context_dict = {'boldmessage': "I am bold font from the context"}
+    context_dict = {}
+
+    camisetas = Produto.objects.get(nome='Camisetas')
+    vendas_camisetas = ProdutoMes.objects.filter(produto=camisetas)
+    vestidos = Produto.objects.get(nome='Vestidos')
+    vendas_vestidos = ProdutoMes.objects.filter(produto=vestidos)
+    calcas = Produto.objects.get(nome='Calças')
+    vendas_calcas = ProdutoMes.objects.filter(produto=calcas)
+
+    vendas_camisetas_limpo = []
+    for venda in vendas_camisetas:
+        if venda.mes.abreviacao == 'Nov':
+            break
+        vendas_camisetas_limpo.append(venda.vendas_mensal)
+    
+    vendas_vestidos_limpo = []
+    for venda in vendas_vestidos:
+        if venda.mes.abreviacao == 'Nov':
+            break
+        vendas_vestidos_limpo.append(venda.vendas_mensal)
+
+    vendas_calcas_limpo = []
+    for venda in vendas_calcas:
+        if venda.mes.abreviacao == 'Nov':
+            break
+        vendas_calcas_limpo.append(venda.vendas_mensal)
+
+    context_dict['vendas_camisetas'] = vendas_camisetas_limpo
+    context_dict['vendas_vestidos'] = vendas_vestidos_limpo
+    context_dict['vendas_calcas'] = vendas_calcas_limpo
     return render_to_response('absorcao/index.html', context_dict, context)
 
 
@@ -431,15 +460,16 @@ def dre(request, abrev_mes=None):
 
         for mes in meses:
             # Vendas
-            vendas[CAMISETAS_INDEX] += vendas_mes(03, 2014, 'Camisetas')
-            vendas[VESTIDOS_INDEX] += vendas_mes(03, 2014, 'Vestidos')
-            vendas[CALCAS_INDEX] += vendas_mes(03, 2014, 'Calças')
+            vendas[CAMISETAS_INDEX] += vendas_mes(mes, 'Camisetas')
+            vendas[VESTIDOS_INDEX] += vendas_mes(mes, 'Vestidos')
+            vendas[CALCAS_INDEX] += vendas_mes(mes, 'Calças')
+            vendas_mes_atual = vendas_mes(mes, 'Camisetas') + vendas_mes(mes, 'Calças') + vendas_mes(mes, 'Vestidos')
             vendas[TOTAL_INDEX] = vendas[CAMISETAS_INDEX] + vendas[VESTIDOS_INDEX] + vendas[CALCAS_INDEX]
 
             # Custo de Produtos Vendidos
-            cpv[CAMISETAS_INDEX] += custo_produto_vendido(03, 2014, 'Camisetas')
-            cpv[VESTIDOS_INDEX] += custo_produto_vendido(03, 2014, 'Vestidos')
-            cpv[CALCAS_INDEX] += custo_produto_vendido(03, 2014, 'Calças')
+            cpv[CAMISETAS_INDEX] += custo_produto_vendido(mes, 'Camisetas')
+            cpv[VESTIDOS_INDEX] += custo_produto_vendido(mes, 'Vestidos')
+            cpv[CALCAS_INDEX] += custo_produto_vendido(mes, 'Calças')
 
             cds_tabela[0] = soma_arrays(cds_tabela[0], custo_direto_detalhado(mes)[0])
             cds_tabela[1] = soma_arrays(cds_tabela[1], custo_direto_detalhado(mes)[1])
@@ -463,7 +493,7 @@ def dre(request, abrev_mes=None):
             # Despesas
             despesas[0][TOTAL_INDEX] += Despesa.objects.get(nome='Administrativas').valor_mensal
             despesas[1][TOTAL_INDEX] += Despesa.objects.get(nome='Com Vendas').valor_mensal
-            despesas[1][TOTAL_INDEX] += Despesa.objects.get(nome='Comissões (porcentagem das vendas)').valor_mensal * (vendas[TOTAL_INDEX] / 100)
+            despesas[1][TOTAL_INDEX] += (Despesa.objects.get(nome='Comissões (porcentagem das vendas)').valor_mensal / 100) * vendas_mes_atual
 
         # Calcula totais
         cpv[TOTAL_INDEX] += sum(cpv)
@@ -530,8 +560,7 @@ def custo_indireto_detalhado(mes):
     return linhas
 
 
-def custo_produto_vendido(num_mes, ano, nome_produto):
-    mes = Mes.objects.get(ano=ano, numero=num_mes)
+def custo_produto_vendido(mes, nome_produto):
     produto = Produto.objects.get(nome=nome_produto)
     produto_mes = ProdutoMes.objects.get(produto=produto, mes=mes)
     return custo_total_unitario(mes, produto) * produto_mes.vendas_mensal
@@ -593,8 +622,7 @@ def custo_direto_detalhado(mes):
     return linhas
 
 
-def vendas_mes(num_mes, ano, nome_produto):
-    mes = Mes.objects.get(numero=num_mes, ano=ano)
+def vendas_mes(mes, nome_produto):
     produto = Produto.objects.get(nome=nome_produto)
     produto_mes = ProdutoMes.objects.get(mes=mes, produto=produto)
     return produto_mes.preco_venda_unitario * produto_mes.vendas_mensal

@@ -2,39 +2,50 @@
 
 {% load static %}
 
-<!--
-<script src="//cdnjs.cloudflare.com/ajax/libs/Chart.js/1.0.1-beta.2/Chart.min.js"> </script>
-<script type="text/javascript">
-    var data = {
-    labels: ["Jan", "Fev", "Mar", "Abr", "Mai", "Jun", "Jul", "Ago", "Set", "Out", "Nov", "Dez"],
-    datasets: [
-    {
-	label: "Custos Diretos",
-	fillColor: "rgba(220,220,220,0.2)",
-	strokeColor: "rgba(220,220,220,1)",
-	pointColor: "rgba(220,220,220,1)",
-	pointStrokeColor: "#fff",
-	pointHighlightFill: "#fff",
-	pointHighlightStroke: "rgba(220,220,220,1)",
-	data: [1,2,3,4,5,6,7,5,2,1,4,4]
-    }
-    ]
-}
-window.onload = function(){
-
-    var ctx = document.getElementById('custosD').getContext('2d');
-    window.myLineChart = new Chart(ctx).Line(data, { responsive: true });
-}
-
-</script>
--->
 {% block body_block %}
 
+	<script src="//cdnjs.cloudflare.com/ajax/libs/Chart.js/1.0.1-beta.2/Chart.min.js"> </script>
+	<script type="text/javascript">
+	    var data = {
+		    labels: ["Jan", "Fev", "Mar", "Abr", "Mai", "Jun", "Jul", "Ago", "Set", "Out"],
+		    datasets: [
+			    {
+					label: "Vendas de camisetas",
+					labelColor : 'white',
+                    labelFontSize : '16',
+					fillColor: "rgba(220,200,220,0.2)",
+					strokeColor: "rgba(220,200,220,1)",
+					pointColor: "rgba(220,200,220,1)",
+					pointStrokeColor: "#fff",
+					pointHighlightFill: "#fff",
+					pointHighlightStroke: "rgba(220,220,220,1)",
+					data: {{vendas_camisetas}}
+			    },
+			    {
+		            label: "Vendas de vestidos",
+		            fillColor: "rgba(51,187,205,0.2)",
+		            strokeColor: "rgba(51,187,205,1)",
+		            pointColor: "rgba(51,187,205,1)",
+		            pointStrokeColor: "#fff",
+		            pointHighlightFill: "#fff",
+		            pointHighlightStroke: "rgba(151,187,205,1)",
+		            data: {{vendas_vestidos}}
+		        },
+		        {
+		            label: "Vendas de calças",
+		            fillColor: "rgba(91,137,15,0.2)",
+		            strokeColor: "rgba(91,137,15,1)",
+		            pointColor: "rgba(91,137,15,1)",
+		            pointStrokeColor: "#fff",
+		            pointHighlightFill: "#fff",
+		            pointHighlightStroke: "rgba(151,187,205,1)",
+		            data: {{vendas_calcas}}
+		        }
+		    ]
+		};
+	</script>
 
-
-    <h1>Absorção says...</h1>
-    hello world! <strong>{{ boldmessage }}</strong><br />
-    <a href="/about/">About</a><br />
+    <h1>Resumo</h1>
 
 	<script type="text/javascript">
 	DIVs = document.getElementsByTagName('div');
@@ -56,14 +67,25 @@ window.onload = function(){
 		}
 	}
 	</script>
-<!--
-    <div id="custosD" width="500" height="300"></canvas>
--->
+
+	<br><br><br>
+	<div class="col-md-8">
+		<p>Vendas por mês</p>
+    	<canvas id="custosD" width="2" height="1"></canvas>
+    </div>
+    <div class="col-md-4">
+    	<p style="color: rgba(220,200,220,1);">Camisetas</p>
+    	<p style="color: rgba(51,187,205,1);">Vestidos</p>
+    	<p style="color: rgba(91,137,15,1);">Calças</p>
+	</div>
 
     <script type="text/javascript">
       $(document).ready(function () {
           $('#home').addClass('active');
       });
+
+      var ctx = document.getElementById('custosD').getContext('2d');
+	  window.myLineChart = new Chart(ctx).Line(data, { responsive: true });   
     </script>
 
 {% endblock %}
