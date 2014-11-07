@@ -56,7 +56,7 @@ def despesa_edit(request, id_despesa=None):
             form.save()
 
             # If the save was successful, redirect to the details page
-            return HttpResponseRedirect('/despesas/')
+            return HttpResponseRedirect('/despesa/')
 
         else:
             print form.errors

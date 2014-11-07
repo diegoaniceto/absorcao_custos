@@ -7,7 +7,7 @@
 
     <h1>Despesas</h1>
     <div class="table-responsive">
-      <table class="table table-hover table-striped">
+      <table class="table table-hover table-striped sortable">
         <thead>
             <th>Nome</th>
             <th>Valor mensal</th>
@@ -17,7 +17,7 @@
             {% for despesa in despesas %}
             <tr>
             <td>{{ despesa.nome }}</td>
-            <td>{{ despesa.valor_mensal|intcomma }}</td>
+            <td>R$ {{ despesa.valor_mensal|floatformat:2|intcomma }}</td>
             <td><a href="/despesa/edit/{{ despesa.id }}"><span class="glyphicon glyphicon-pencil"></span></a></td>
             </tr>
             {% endfor %}
