@@ -37,6 +37,7 @@ class CustoIndiretoForm(forms.ModelForm):
 
     class Meta:
         model = CustoIndireto
+        fields = ['nome', 'valor_mensal']
 
 
 class TempoProducaoForm(forms.ModelForm):
