@@ -20,5 +20,6 @@ urlpatterns = patterns('',
                        url(r'^tempo-producao/$', views.tempo_producao, name='tempo-producao'),
                        url(r'^tempo-producao/edit/(?P<id_tempo>\w+)/$', views.tempo_producao_edit, name='tempo-producao_edit'),
                        url(r'^relatorio/rateio-cip$', views.relatorio, name='relatorio'),
-                       url(r'^relatorio/dre$', views.dre, name='dre'),
+                       url(r'^relatorio/dre/(?P<abrev_mes>\w+)$', views.dre, name='dre'),
+                       url(r'^relatorio/dre/$', views.dre, name='dre'),
                     )

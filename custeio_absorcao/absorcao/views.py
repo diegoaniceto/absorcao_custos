@@ -11,6 +11,9 @@ from models import Departamento
 from models import Mes
 from forms import ProdutoForm, TempoProducaoForm
 from forms import ProdutoMesForm
+import traceback
+import operator
+import sys
 
 
 @login_required
@@ -220,7 +223,7 @@ def produto_view(request, id_produto=None):
 def custo_direto_index(request):
     context = RequestContext(request)
     context_dict = {}
-    custos_totais = [0]*9
+    custos_totais = [0] * 9
     
     custos = CustoDiretoProduto.objects.all().order_by('produto__nome').order_by('custo_direto__nome')
     
@@ -337,8 +340,7 @@ def user_login(request):
             else:
                 return HttpResponse("Sua conta esta desabilitada, contacte o administrador do sistema.")
         else:
-            print "Invalid login details: {0}, {1}".format(username, password)
-            return HttpResponse("Invalid login details supplied.")
+            return HttpResponse("Login invalido")
 
     else:
         return render_to_response('absorcao/login.html', {}, context)
@@ -397,8 +399,9 @@ def tempo_producao_edit(request, id_tempo):
 
 # DRE =================================
 
+
 @login_required
-def dre(request):
+def dre(request, abrev_mes=None):
     context = RequestContext(request)
     context_dict = {}
 
@@ -408,71 +411,104 @@ def dre(request):
     CALCAS_INDEX = 3
     TOTAL_INDEX = 4
 
-    # Vendas
-    vendas = [0, 0, 0, 0, 0]
-    vendas[CAMISETAS_INDEX] = vendas_mes(03, 2014, 'Camisetas')
-    vendas[VESTIDOS_INDEX] = vendas_mes(03, 2014, 'Vestidos')
-    vendas[CALCAS_INDEX] = vendas_mes(03, 2014, 'Calças')
-    vendas[TOTAL_INDEX] = sum(vendas)
-    vendas[NOME_INDEX] = 'Vendas'
+    try:
+        meses = []
+        if abrev_mes is not None:
+            meses.append(Mes.objects.get(ano=2014, abreviacao=abrev_mes))
+            context_dict['nome_mes'] = meses[0].nome
+        else:
+            for i in range(1, 11):
+                meses.append(Mes.objects.get(ano=2014, numero=i))
+            context_dict['nome_mes'] = 'Janeiro a Outubro'
 
-    # Custo de Produtos Vendidos
-    cpv = [0, 0, 0, 0, 0]
-    cpv[CAMISETAS_INDEX] = custo_produto_vendido(03, 2014, 'Camisetas')
-    cpv[VESTIDOS_INDEX] = custo_produto_vendido(03, 2014, 'Vestidos')
-    cpv[CALCAS_INDEX] = custo_produto_vendido(03, 2014, 'Calças')
-    cpv[TOTAL_INDEX] = sum(cpv)
-    cpv[NOME_INDEX] = 'Custos dos Produtos Vendidos'
+        vendas = [0, 0, 0, 0, 0]
+        cpv = [0, 0, 0, 0, 0]
+        subtotal_cip = [0, 0, 0, 0, 0]
+        subtotal_diretos = [0, 0, 0, 0, 0]
+        lucro_bruto = [0, 0, 0, 0, 0]
+        despesas = [[0, '-', '-', '-', 0], [0, '-', '-', '-', 0]]
+        lucro_antes_ir = [0, '-', '-', '-', 0]
+        cds_tabela = [[0,0,0,0,0],[0,0,0,0,0],[0,0,0,0,0]]
+        cip_tabela = [[0,0,0,0,0],[0,0,0,0,0]]
 
-    # Subtotal diretos
-    cds_tabela = custo_direto_detalhado(Mes.objects.get(ano=2014, numero=3))
-    subtotal_diretos = [0, 0, 0, 0, 0]
-    subtotal_diretos[1] = cds_tabela[0][1] + cds_tabela[1][1] + cds_tabela[2][1]
-    subtotal_diretos[2] = cds_tabela[0][2] + cds_tabela[1][2] + cds_tabela[2][2]
-    subtotal_diretos[3] = cds_tabela[0][3] + cds_tabela[1][3] + cds_tabela[2][3]
-    subtotal_diretos[4] = cds_tabela[0][4] + cds_tabela[1][4] + cds_tabela[2][4]
-    subtotal_diretos[0] = 'Subtotal diretos'
+        for mes in meses:
+            # Vendas
+            vendas[CAMISETAS_INDEX] += vendas_mes(03, 2014, 'Camisetas')
+            vendas[VESTIDOS_INDEX] += vendas_mes(03, 2014, 'Vestidos')
+            vendas[CALCAS_INDEX] += vendas_mes(03, 2014, 'Calças')
+            vendas[TOTAL_INDEX] = vendas[CAMISETAS_INDEX] + vendas[VESTIDOS_INDEX] + vendas[CALCAS_INDEX]
 
-    cip_tabela = custo_indireto_detalhado(Mes.objects.get(ano=2014, numero=3))
-    subtotal_cip = [0, 0, 0, 0, 0]
-    subtotal_cip[1] = cip_tabela[0][1] + cip_tabela[1][1]
-    subtotal_cip[2] = cip_tabela[0][2] + cip_tabela[1][2]
-    subtotal_cip[3] = cip_tabela[0][3] + cip_tabela[1][3]
-    subtotal_cip[4] = cip_tabela[0][4] + cip_tabela[1][4]
-    subtotal_cip[0] = 'Subtotal CIP'
+            # Custo de Produtos Vendidos
+            cpv[CAMISETAS_INDEX] += custo_produto_vendido(03, 2014, 'Camisetas')
+            cpv[VESTIDOS_INDEX] += custo_produto_vendido(03, 2014, 'Vestidos')
+            cpv[CALCAS_INDEX] += custo_produto_vendido(03, 2014, 'Calças')
 
-    # Lucro Bruto
-    lucro_bruto = [0, 0, 0, 0, 0]
-    lucro_bruto[CAMISETAS_INDEX] = float(vendas[CAMISETAS_INDEX]) - cpv[CAMISETAS_INDEX]
-    lucro_bruto[VESTIDOS_INDEX] = float(vendas[VESTIDOS_INDEX]) - cpv[VESTIDOS_INDEX]
-    lucro_bruto[VESTIDOS_INDEX] = float(vendas[VESTIDOS_INDEX]) - cpv[VESTIDOS_INDEX]
-    lucro_bruto[TOTAL_INDEX] = sum(lucro_bruto)
-    lucro_bruto[0] = "Lucro Bruto"
+            cds_tabela[0] = soma_arrays(cds_tabela[0], custo_direto_detalhado(mes)[0])
+            cds_tabela[1] = soma_arrays(cds_tabela[1], custo_direto_detalhado(mes)[1])
+            cds_tabela[2] = soma_arrays(cds_tabela[2], custo_direto_detalhado(mes)[2])
+            
+            # Subtotal diretos
+            subtotal_diretos[1] = cds_tabela[0][1] + cds_tabela[1][1] + cds_tabela[2][1]  # Tecido
+            subtotal_diretos[2] = cds_tabela[0][2] + cds_tabela[1][2] + cds_tabela[2][2]  # Aviamento
+            subtotal_diretos[3] = cds_tabela[0][3] + cds_tabela[1][3] + cds_tabela[2][3]  # MOD
+            subtotal_diretos[4] = cds_tabela[0][4] + cds_tabela[1][4] + cds_tabela[2][4]  # Subtotal
 
-    # Despesas
-    despesas = [[0, '-', '-', '-', 0], [0, '-', '-', '-', 0]]
-    despesas[0][TOTAL_INDEX] = Despesa.objects.get(nome='Administrativas').valor_mensal
-    despesas[0][NOME_INDEX] = 'Despesas Administrativas'
-    despesas[1][TOTAL_INDEX] = Despesa.objects.get(nome='Com Vendas').valor_mensal
-    despesas[1][TOTAL_INDEX] += Despesa.objects.get(nome='Comissões (porcentagem das vendas)').valor_mensal * (vendas[TOTAL_INDEX] / 100)
-    despesas[1][NOME_INDEX] = 'Despesas com Vendas'
+            cip_tabela[0] = soma_arrays(cip_tabela[0], custo_indireto_detalhado(mes)[0])
+            cip_tabela[1] = soma_arrays(cip_tabela[1], custo_indireto_detalhado(mes)[1])
 
-    # Lucro antes do IR
-    lucro_antes_ir = [0, '-', '-', '-', 0]
-    lucro_antes_ir[TOTAL_INDEX] = lucro_bruto[TOTAL_INDEX] - float(despesas[1][TOTAL_INDEX]) - float(despesas[0][TOTAL_INDEX])
-    lucro_antes_ir[NOME_INDEX] = 'Lucro Antes do IR'
+            # cip_tabela = custo_indireto_detalhado(mes)
+            subtotal_cip[1] = cip_tabela[0][1] + cip_tabela[1][1]  # Corte e Costura
+            subtotal_cip[2] = cip_tabela[0][2] + cip_tabela[1][2]  # Acabamento
+            subtotal_cip[3] = cip_tabela[0][3] + cip_tabela[1][3]  # Subtotal
+            subtotal_cip[4] = cip_tabela[0][4] + cip_tabela[1][4]
 
-    context_dict['vendas'] = vendas
-    context_dict['cpv'] = cpv
-    context_dict['cd'] = cds_tabela
-    context_dict['subtotal_diretos'] = subtotal_diretos
-    context_dict['cip'] = cip_tabela
-    context_dict['subtotal_cip'] = subtotal_cip
-    context_dict['lucro_bruto'] = lucro_bruto
-    context_dict['despesas'] = despesas
-    context_dict['lucro_antes_ir'] = lucro_antes_ir
+            # Despesas
+            despesas[0][TOTAL_INDEX] += Despesa.objects.get(nome='Administrativas').valor_mensal
+            despesas[1][TOTAL_INDEX] += Despesa.objects.get(nome='Com Vendas').valor_mensal
+            despesas[1][TOTAL_INDEX] += Despesa.objects.get(nome='Comissões (porcentagem das vendas)').valor_mensal * (vendas[TOTAL_INDEX] / 100)
+
+        # Calcula totais
+        cpv[TOTAL_INDEX] += sum(cpv)
+
+        # Lucro Bruto
+        lucro_bruto[CAMISETAS_INDEX] += float(vendas[CAMISETAS_INDEX]) - cpv[CAMISETAS_INDEX]
+        lucro_bruto[VESTIDOS_INDEX] += float(vendas[VESTIDOS_INDEX]) - cpv[VESTIDOS_INDEX]
+        lucro_bruto[CALCAS_INDEX] += float(vendas[CALCAS_INDEX]) - cpv[CALCAS_INDEX]
+        lucro_bruto[TOTAL_INDEX] += sum(lucro_bruto)
+
+        # Lucro antes do IR
+        lucro_antes_ir[TOTAL_INDEX] += lucro_bruto[TOTAL_INDEX] - float(despesas[1][TOTAL_INDEX]) - float(despesas[0][TOTAL_INDEX])
+
+        vendas[NOME_INDEX] = 'Vendas'
+        cpv[NOME_INDEX] = 'Custos dos Produtos Vendidos'
+        subtotal_diretos[NOME_INDEX] = 'Subtotal diretos'
+        subtotal_cip[NOME_INDEX] = 'Subtotal CIP'
+        lucro_bruto[NOME_INDEX] = 'Lucro Bruto'
+        despesas[0][NOME_INDEX] = 'Despesas Administrativas'
+        despesas[1][NOME_INDEX] = 'Despesas com Vendas'
+        lucro_antes_ir[NOME_INDEX] = 'Lucro Antes do IR'
+
+        context_dict['vendas'] = vendas
+        context_dict['cpv'] = cpv
+        context_dict['cd'] = cds_tabela
+        context_dict['subtotal_diretos'] = subtotal_diretos
+        context_dict['cip'] = cip_tabela
+        context_dict['subtotal_cip'] = subtotal_cip
+        context_dict['lucro_bruto'] = lucro_bruto
+        context_dict['despesas'] = despesas
+        context_dict['lucro_antes_ir'] = lucro_antes_ir
+    except:
+        exc_type, exc_value, exc_traceback = sys.exc_info()
+        lines = traceback.format_exception(exc_type, exc_value, exc_traceback)
+        message = ''.join('!! ' + line for line in lines)  # Log it or whatever here
+        context_dict['error'] = 'Ocorreu um erro durante a requisição:\n\n' + str(message)
 
     return render_to_response('absorcao/dre.html', context_dict, context)
+
+
+# Soma o conteúdo de dois arrays mantendo o campo do arr[0] (que é o nome na tabela DRE)
+def soma_arrays(arr1, arr2):
+    return [arr2[0], arr1[1] + arr2[1], arr1[2] + arr2[2], arr1[3] + arr2[3], arr1[4] + arr2[4]]
 
 
 def custo_indireto_detalhado(mes):
@@ -500,7 +536,6 @@ def custo_produto_vendido(num_mes, ano, nome_produto):
     mes = Mes.objects.get(ano=ano, numero=num_mes)
     produto = Produto.objects.get(nome=nome_produto)
     produto_mes = ProdutoMes.objects.get(produto=produto, mes=mes)
-    print custo_total_unitario(mes, produto)
     return custo_total_unitario(mes, produto) * produto_mes.vendas_mensal
 
 
@@ -525,8 +560,6 @@ def custo_indireto_unitario_total(produto):
 def custo_indireto_unitario_por_depto(produto, departamento):
     tempo_producao = TempoProducao.objects.get(produto=produto, departamento=departamento)
     #tempo_producao.tempo_unitario  deve ser 0.3 para camisa e corte e costura
-    print '--' + str(custo_por_hora(departamento))
-    print tempo_producao.tempo_unitario
     return custo_por_hora(departamento) * float(tempo_producao.tempo_unitario)
 
 
@@ -540,6 +573,8 @@ def custo_direto_unitario_total(produto, mes):
     return custo_dir_total
 
 
+# Calcula o custo direto em um mes
+# Retorna no formato [[Nome, valor tecido * producao camisa, valor tecido * producao vestido, ..., soma],...]
 def custo_direto_detalhado(mes):
     camisetas = Produto.objects.get(nome='Camisetas')
     camisetas_mes = ProdutoMes.objects.get(produto=camisetas, mes=mes)

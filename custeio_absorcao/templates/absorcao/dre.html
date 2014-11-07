@@ -7,6 +7,12 @@
 {% block body_block %}
 
     <h1>Demonstração de Resultados do Exercício</h1>
+
+    <p>Mostrando dados de {{nome_mes}}</p>
+
+    {% if error %}
+    	<pre>{{error}}</pre>
+    {% else %}
     <div class="table-responsive">
 	  <table class="table table-hover sortable table-condensed">
     	<thead>
@@ -124,6 +130,7 @@
 	    </tbody>
 	  </table>
 	</div>
+	{% endif %}
 	   <script type="text/javascript">
 	      $(document).ready(function () {
 	      $('#relatorios').addClass('active');
