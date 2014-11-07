@@ -32,7 +32,7 @@ def despesas_index(request):
 
     context_dict['despesas'] = despesas
 
-    return render_to_response('absorcao/despesas.html', context_dict, context)
+    return render_to_response('absorcao/despesa.html', context_dict, context)
 
 
 @login_required
@@ -46,7 +46,7 @@ def despesa_edit(request, id_despesa=None):
 
     except Despesa.DoesNotExist:
         # We get here if we didn't find the specified experiment.
-        return render_to_response('absorcao/despesas-edit.html',
+        return render_to_response('absorcao/despesa-edit.html',
                                   context_dict, context)
 
     if request.POST:
@@ -66,7 +66,7 @@ def despesa_edit(request, id_despesa=None):
 
     context_dict['form'] = form
 
-    return render_to_response('absorcao/despesas-edit.html', context_dict,
+    return render_to_response('absorcao/despesa-edit.html', context_dict,
                               context)
 
 
