@@ -228,34 +228,34 @@ def custo_direto_index(request):
     custos = CustoDiretoProduto.objects.all().order_by('produto__nome').order_by('custo_direto__nome')
     
     for custo in custos:
-        if custo.custo_direto.nome == 'Aviamentos':
-            if custo.produto.nome == 'Camisetas':
+        if custo.custo_direto.nome == u'Aviamentos':
+            if custo.produto.nome == u'Camisetas':
                 custos_totais[0] += custo.valor_unitario
-            if custo.produto.nome == 'Vestidos':
+            if custo.produto.nome == u'Vestidos':
                 custos_totais[1] += custo.valor_unitario
-            if custo.produto.nome == 'Calças':
+            if custo.produto.nome == u'Calças':
                 custos_totais[2] += custo.valor_unitario
 
-        elif custo.custo_direto.nome == 'Mao-de-obra Direta':
-            if custo.produto.nome == 'Camisetas':
+        elif custo.custo_direto.nome == u'Mão-de-obra Direta':
+            if custo.produto.nome == u'Camisetas':
                 custos_totais[3] += custo.valor_unitario
-            if custo.produto.nome == 'Vestidos':
+            if custo.produto.nome == u'Vestidos':
                 custos_totais[4] += custo.valor_unitario
-            if custo.produto.nome == 'Calças':
+            if custo.produto.nome == u'Calças':
                 custos_totais[5] += custo.valor_unitario
 
-        elif custo.custo_direto.nome == 'Tecido':
-            if custo.produto.nome == 'Camisetas':
+        elif custo.custo_direto.nome == u'Tecido':
+            if custo.produto.nome == u'Camisetas':
                 custos_totais[6] += custo.valor_unitario
-            if custo.produto.nome == 'Vestidos':
+            if custo.produto.nome == u'Vestidos':
                 custos_totais[7] += custo.valor_unitario
-            if custo.produto.nome == 'Calças':
+            if custo.produto.nome == u'Calças':
                 custos_totais[8] += custo.valor_unitario
     
     produtos = Produto.objects.all().order_by('nome')
  
     context_dict['index'] = 1
-    context_dict['mes'] = None
+    context_dict['mes'] = "todos os meses"
     context_dict['produtos'] = produtos
     context_dict['custos_diretos_produtos'] = custos_totais
     
@@ -319,9 +319,7 @@ def custo_direto_save(request, mes=None):
         i += 1
         custo.save()
 
-    context_dict['status'] = True
-    
-    return render_to_response('absorcao/any-save.html', context_dict, context)
+    return HttpResponseRedirect('/custo-direto/'+mes+'/')
 
 
 def user_login(request):
