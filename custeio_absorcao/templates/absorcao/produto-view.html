@@ -25,7 +25,7 @@
 			    <tbody>
 				    {% for produto_mes in produto_meses %}
 			    	<tr>
-				    <td>{{ produto_mes.mes }}/{{produto_mes.mes.ano}}</td>
+				    <td>{{ produto_mes.mes }}</td>
 				    <td>{{ produto_mes.producao_mensal|intcomma }}</td>
 				    <td>R$ {{ produto_mes.preco_venda_unitario|floatformat:2 }}</td>
 				    <td><a href="/produto-mes/edit/{{ produto_mes.id }}"><span class="glyphicon glyphicon-pencil"></span></a></td>

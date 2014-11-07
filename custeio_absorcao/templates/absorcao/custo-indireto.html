@@ -16,7 +16,7 @@
         <tbody>
             {% for custo_indireto in custos_indiretos %}
             <tr>
-            <td><a href="/custo_indireto/{{ custo_indireto.id }}">{{ custo_indireto.nome }}</a></td>
+            <td>{{ custo_indireto.nome }}</td>
             <td><a href="/custo_indireto/edit/{{ custo_indireto.id }}"><span class="glyphicon glyphicon-pencil"></span></a></td>
             </tr>
             {% endfor %}
