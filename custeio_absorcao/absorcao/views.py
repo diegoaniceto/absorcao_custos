@@ -259,7 +259,7 @@ def custo_direto_index(request):
     context_dict['produtos'] = produtos
     context_dict['custos_diretos_produtos'] = custos_totais
     
-    return render_to_response('absorcao/custo_direto.html', context_dict, context)
+    return render_to_response('absorcao/custo-direto.html', context_dict, context)
 
 
 @login_required
@@ -281,7 +281,7 @@ def custo_direto_mes(request, mes):
     context_dict['produtos'] = produtos
     context_dict['custos_diretos_produtos'] = custos_diretos_produtos
     
-    return render_to_response('absorcao/custo_direto.html', context_dict, context)
+    return render_to_response('absorcao/custo-direto.html', context_dict, context)
 
 
 @login_required
@@ -303,7 +303,7 @@ def custo_direto_edit(request, mes=None):
     context_dict['produtos'] = produtos
     context_dict['custos_diretos_produtos'] = custos_diretos_produtos
     
-    return render_to_response('absorcao/custo_direto-edit.html', context_dict, context)
+    return render_to_response('absorcao/custo-direto-edit.html', context_dict, context)
 
 
 @login_required
