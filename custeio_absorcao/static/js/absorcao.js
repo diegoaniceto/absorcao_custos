@@ -16,9 +16,15 @@ $(document).ready(function() {
 	    			window.location.href = '../../Jan/';
 	    		}
 	    	}
+	    	else if (window.location.href.indexOf("dre")>=0){
+	    		window.location.href = 'Jan';
+	    	}
 	    	else{
 	    		window.location.href = '../Jan/';
 	    	}
+	    }
+	    else if (window.location.href.indexOf("dre")>=0){
+    		window.location.href = 'Jan';
 	    }
 	    else{
 	    	window.location.href = 'Jan/';
@@ -44,9 +50,15 @@ $(document).ready(function() {
 	    			window.location.href = '../../Fev/';
 	    		}
 	    	}
+	    	else if (window.location.href.indexOf("dre")>=0){
+	    		window.location.href = 'Fev';
+	    	}
 	    	else{
 	    		window.location.href = '../Fev/';
 	    	}
+	    }
+	    else if (window.location.href.indexOf("dre")>=0){
+    		window.location.href = 'Fev';
 	    }
 	    else{
 	    	window.location.href = 'Fev/';
@@ -72,9 +84,15 @@ $(document).ready(function() {
 	    			window.location.href = '../../Mar/';
 	    		}
 	    	}
+	    	else if (window.location.href.indexOf("dre")>=0){
+	    		window.location.href = 'Mar';
+	    	}
 	    	else{
 	    		window.location.href = '../Mar/';
 	    	}
+	    }
+	    else if (window.location.href.indexOf("dre")>=0){
+    		window.location.href = 'Mar';
 	    }
 	    else{
 	    	window.location.href = 'Mar/';
@@ -100,9 +118,15 @@ $(document).ready(function() {
 	    			window.location.href = '../../Abr/';
 	    		}
 	    	}
+	    	else if (window.location.href.indexOf("dre")>=0){
+	    		window.location.href = 'Abr';
+	    	}
 	    	else{
 	    		window.location.href = '../Abr/';
 	    	}
+	    }
+	    else if (window.location.href.indexOf("dre")>=0){
+    		window.location.href = 'Abr';
 	    }
 	    else{
 	    	window.location.href = 'Abr/';
@@ -128,9 +152,15 @@ $(document).ready(function() {
 	    			window.location.href = '../../Mai/';
 	    		}
 	    	}
+	    	else if (window.location.href.indexOf("dre")>=0){
+	    		window.location.href = 'Mai';
+	    	}
 	    	else{
 	    		window.location.href = '../Mai/';
 	    	}
+	    }
+	    else if (window.location.href.indexOf("dre")>=0){
+    		window.location.href = 'Mai';
 	    }
 	    else{
 	    	window.location.href = 'Mai/';
@@ -156,9 +186,15 @@ $(document).ready(function() {
 	    			window.location.href = '../../Jun/';
 	    		}
 	    	}
+	    	else if (window.location.href.indexOf("dre")>=0){
+	    		window.location.href = 'Jun';
+	    	}
 	    	else{
 	    		window.location.href = '../Jun/';
 	    	}
+	    }
+	    else if (window.location.href.indexOf("dre")>=0){
+    		window.location.href = 'Jun';
 	    }
 	    else{
 	    	window.location.href = 'Jun/';
@@ -184,9 +220,15 @@ $(document).ready(function() {
 	    			window.location.href = '../../Jul/';
 	    		}
 	    	}
+	    	else if (window.location.href.indexOf("dre")>=0){
+	    		window.location.href = 'Jul';
+	    	}
 	    	else{
 	    		window.location.href = '../Jul/';
 	    	}
+	    }
+	    else if (window.location.href.indexOf("dre")>=0){
+    		window.location.href = 'Jul';
 	    }
 	    else{
 	    	window.location.href = 'Jul/';
@@ -212,9 +254,15 @@ $(document).ready(function() {
 	    			window.location.href = '../../Ago/';
 	    		}
 	    	}
+	    	else if (window.location.href.indexOf("dre")>=0){
+	    		window.location.href = 'Ago';
+	    	}
 	    	else{
 	    		window.location.href = '../Ago/';
 	    	}
+	    }
+	    else if (window.location.href.indexOf("dre")>=0){
+    		window.location.href = 'Ago';
 	    }
 	    else{
 	    	window.location.href = 'Ago/';
@@ -240,9 +288,15 @@ $(document).ready(function() {
 	    			window.location.href = '../../Set/';
 	    		}
 	    	}
+	    	else if (window.location.href.indexOf("dre")>=0){
+	    		window.location.href = 'Set';
+	    	}
 	    	else{
 	    		window.location.href = '../Set/';
 	    	}
+	    }
+	    else if (window.location.href.indexOf("dre")>=0){
+    		window.location.href = 'Set';
 	    }
 	    else{
 	    	window.location.href = 'Set/';
@@ -268,9 +322,15 @@ $(document).ready(function() {
 	    			window.location.href = '../../Out/';
 	    		}
 	    	}
+	    	else if (window.location.href.indexOf("dre")>=0){
+	    		window.location.href = 'Out';
+	    	}
 	    	else{
 	    		window.location.href = '../Out/';
 	    	}
+	    }
+	    else if (window.location.href.indexOf("dre")>=0){
+    		window.location.href = 'Out';
 	    }
 	    else{
 	    	window.location.href = 'Out/';
@@ -296,9 +356,15 @@ $(document).ready(function() {
 	    			window.location.href = '../../Nov/';
 	    		}
 	    	}
+	    	else if (window.location.href.indexOf("dre")>=0){
+	    		window.location.href = 'Nov';
+	    	}
 	    	else{
 	    		window.location.href = '../Nov/';
 	    	}
+	    }
+	    else if (window.location.href.indexOf("dre")>=0){
+    		window.location.href = 'Nov';
 	    }
 	    else{
 	    	window.location.href = 'Nov/';
@@ -324,9 +390,15 @@ $(document).ready(function() {
 	    			window.location.href = '../../Dez/';
 	    		}
 	    	}
+	    	else if (window.location.href.indexOf("dre")>=0){
+	    		window.location.href = 'Dez';
+	    	}
 	    	else{
 	    		window.location.href = '../Dez/';
 	    	}
+	    }
+	    else if (window.location.href.indexOf("dre")>=0){
+    		window.location.href = 'Dez';
 	    }
 	    else{
 	    	window.location.href = 'Dez/';
@@ -347,11 +419,15 @@ $(document).ready(function() {
 	    	if(window.location.href.indexOf("save") >= 0){
 	    			window.location.href = '../../../';
 	    		}
+	    	else if (window.location.href.indexOf("dre")>=0){
+	    		window.location.href = '/relatorio/dre/';
+	    	}
     		else{
     			window.location.href = '../';
     		}
 	    	
 	    }
+	    
 	    else{
 	    	window.location.href = '#';
 	    }
