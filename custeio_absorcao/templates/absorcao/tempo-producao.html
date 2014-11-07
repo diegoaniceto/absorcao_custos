@@ -10,16 +10,16 @@
     <div class="table-responsive">
 	  <table class="table table-hover table-striped sortable">
     	<thead>
-    		<th>Produto</th>
     		<th>Departamento</th>
+    		<th>Produto</th>
     		<th>Tempo unitário</th>
     		<th>Ações</th>
     	</thead>
 	    <tbody>
 		    {% for tempo in tempo_producao %}
 	    	<tr>
-		    <td><a href="/produto/{{ tempo.produto.id }}">{{ tempo.produto.nome }}</a></td>
 		    <td>{{ tempo.departamento.nome }}</td>
+		    <td><a href="/produto/{{ tempo.produto.id }}">{{ tempo.produto.nome }}</a></td>
 		    <td>{{ tempo.tempo_unitario }}h</td>
 		    <td><a href="/tempo-producao/edit/{{ tempo.id }}"><span class="glyphicon glyphicon-pencil"></span></a></td>
 	    	</tr>
