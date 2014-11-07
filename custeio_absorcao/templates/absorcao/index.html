@@ -1,8 +1,36 @@
 {% extends 'absorcao/base.html' %}
 
 {% load static %}
+{% block extrahead %}
+<script src="//cdnjs.cloudflare.com/ajax/libs/Chart.js/1.0.1-beta.2/Chart.min.js"> </script>
+<script type="text/javascript">
+    var data = {
+    labels: ["Jan", "Fev", "Mar", "Abr", "Mai", "Jun", "Jul", "Ago", "Set", "Out", "Nov", "Dez"],
+    datasets: [
+    {
+	label: "Custos Diretos",
+	fillColor: "rgba(220,220,220,0.2)",
+	strokeColor: "rgba(220,220,220,1)",
+	pointColor: "rgba(220,220,220,1)",
+	pointStrokeColor: "#fff",
+	pointHighlightFill: "#fff",
+	pointHighlightStroke: "rgba(220,220,220,1)",
+	data: [1,2,3,4,5,6,7,5,2,1,4,4]
+    }
+    ]
+}
+window.onload = function(){
+
+    var ctx = document.getElementById('custosD').getContext('2d');
+    window.myLineChart = new Chart(ctx).Line(data, { responsive: true });
+}
+
+</script>
+{% endblock %}
 
 {% block body_block %}
+
+
 
     <h1>Absorção says...</h1>
     hello world! <strong>{{ boldmessage }}</strong><br />
@@ -29,11 +57,13 @@
 	}
 	</script>
 
-	
+    <div id="custosD" width="500" height="300"></canvas>
+
+
     <script type="text/javascript">
       $(document).ready(function () {
           $('#home').addClass('active');
       });
-    </script> 
+    </script>
 
 {% endblock %}
