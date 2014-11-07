@@ -27,6 +27,26 @@
             <a href="/custo-indireto/" class="btn btn-small btn-default pull-right">Cancelar</a>
         </form>
     </div>
+    <script type="text/javascript">
+    DIVs = document.getElementsByTagName('div');
+
+    for (var i = DIVs.length - 1; i >= 0; i--) {
+
+      if (DIVs[i].className.indexOf('sidebar-nav') > -1){
+
+      DIVs[i].style.display = 'none' ;
+      }
+    }
+
+    for (var i = DIVs.length - 1; i >= 0; i--) {
+
+      if (DIVs[i].className.indexOf('col-md-9') > -1){
+
+        DIVs[i].style.float = 'none' ;
+        DIVs[i].style.margin = 'auto' ;
+      }
+    }
+  </script>
    <script type="text/javascript">
       $(document).ready(function () {
       $('#financeiro').addClass('active');
