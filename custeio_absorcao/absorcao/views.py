@@ -19,7 +19,36 @@ import sys
 @login_required
 def index(request):
     context = RequestContext(request)
-    context_dict = {'boldmessage': "I am bold font from the context"}
+    context_dict = {}
+
+    camisetas = Produto.objects.get(nome='Camisetas')
+    vendas_camisetas = ProdutoMes.objects.filter(produto=camisetas)
+    vestidos = Produto.objects.get(nome='Vestidos')
+    vendas_vestidos = ProdutoMes.objects.filter(produto=vestidos)
+    calcas = Produto.objects.get(nome='Calças')
+    vendas_calcas = ProdutoMes.objects.filter(produto=calcas)
+
+    vendas_camisetas_limpo = []
+    for venda in vendas_camisetas:
+        if venda.mes.abreviacao == 'Nov':
+            break
+        vendas_camisetas_limpo.append(venda.vendas_mensal)
+    
+    vendas_vestidos_limpo = []
+    for venda in vendas_vestidos:
+        if venda.mes.abreviacao == 'Nov':
+            break
+        vendas_vestidos_limpo.append(venda.vendas_mensal)
+
+    vendas_calcas_limpo = []
+    for venda in vendas_calcas:
+        if venda.mes.abreviacao == 'Nov':
+            break
+        vendas_calcas_limpo.append(venda.vendas_mensal)
+
+    context_dict['vendas_camisetas'] = vendas_camisetas_limpo
+    context_dict['vendas_vestidos'] = vendas_vestidos_limpo
+    context_dict['vendas_calcas'] = vendas_calcas_limpo
     return render_to_response('absorcao/index.html', context_dict, context)
 
 
