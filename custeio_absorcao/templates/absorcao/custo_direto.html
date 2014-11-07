@@ -1,6 +1,7 @@
 {% extends 'absorcao/base.html' %}
 
 {% load static %}
+{% load humanize   %}
 
 {% block title %}Custos Indiretos{% endblock %}
 
@@ -33,9 +34,9 @@
                             <td>Tecidos</td>
                         {% endif %}
                 {% if index == 1 %}
-                    <td>{{ custo }}</td>
+                    <td>R$ {{ custo|floatformat:2 }}</td>
                 {% else %}
-		            <td>{{ custo.valor_unitario }}</td>
+		            <td>R$ {{ custo.valor_unitario|floatformat:2 }}</td>
                 {% endif %}
                         {% if forloop.counter0 == 2 or forloop.counter0 == 5 or forloop.counter0 == 8 %}
 	    	            </tr>
